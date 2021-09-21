@@ -11,9 +11,8 @@ if ($_POST) {
 	} catch (Exception $e) {
 		// $_SESSION
 		flash(['message' => $e->getMessage(), 'type' => 'danger']);
-		header("Location: /ict/newstaff.php");
 	}
-	// exit();
+	header("Location: /ict/staff.php");
 }
 
 require '../header.php';
