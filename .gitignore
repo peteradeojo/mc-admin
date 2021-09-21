@@ -2,3 +2,4 @@ node_modules
 vendor
 *.scss
 .env
+*.sql

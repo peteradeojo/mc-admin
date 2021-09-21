@@ -9,6 +9,7 @@ class Staff implements Serializable
 {
 	private $username;
 	private $password;
+	private $userdata;
 	private \Database\Database $dbClient;
 
 	function __construct($username, $password, $dbClient)
@@ -31,12 +32,13 @@ class Staff implements Serializable
 	function authenticate()
 	{
 		try {
-			$value = $this->dbClient->select('login', where: "username='$this->username' AND password='$this->password'");
+			$value = $this->dbClient->select('login', where: "username='$this->username' AND password='$this->password' and active=1");
 			// print_r($value);
+			// exit();
 			if ($value) {
 				$_SESSION['login']['status'] = true;
+				$this->userdata = $value;
 				$this->loggedin = true;
-				// serialize($this);
 				return true;
 			} else {
 				$_SESSION['staff'] = null;
@@ -61,7 +63,8 @@ class Staff implements Serializable
 			'password' => $this->password,
 			'readwrite' => @$this->readwrite,
 			'accesslevel' => @$this->accesslevel,
-			'loggedin' => @$this->loggedin
+			'loggedin' => @$this->loggedin,
+			'userdata' => @$this->userdata
 		]);
 	}
 
@@ -73,5 +76,6 @@ class Staff implements Serializable
 		$this->readwrite = $data['readwrite'];
 		$this->accesslevel = $data['accesslevel'];
 		$this->loggedin = $data['loggedin'];
+		$this->userdata = $data['userdata'];
 	}
 }

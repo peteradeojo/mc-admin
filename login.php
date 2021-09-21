@@ -11,10 +11,14 @@ if ($_POST) {
 		$db = new Database();
 		$db->connect();
 		$staff = new Staff($_POST['username'], $_POST['password'], $db);
+		// print_r($staff);
+		// exit();
 		if ($staff->authenticate()) {
 			$_SESSION['staff'] = serialize($staff);
 			header("Location: /");
-		};
+		} else {
+			echo "No auth";
+		}
 	} catch (Exception $e) {
 		//throw $th;
 		echo $e->getMessage();
