@@ -5,6 +5,8 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/jquery.dataTables.min.css" integrity="sha512-1k7mWiTNoyx2XtmI96o+hdjP8nn0f3Z2N4oF/9ZZRgijyV4omsKOXEnqL1gKQNPy2MTSP9rIEWGcH/CInulptA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="/assets/css/style.css">
 	<?php
 	if (@$stylesheets) {
@@ -19,26 +21,25 @@
 <body>
 	<aside>
 		<div class="container">
-			<a href="/" class="head-link"><img src="/assets/maternal-and-child.png" alt="" srcset="" height="50"><span><?= strtoupper($staff->getUsername()) ?></span></a>
+			<a href="/<?= $staff->getWorkspace() ?>" class="head-link">
+				<img src="/assets/maternal-and-child.png" alt="" srcset="" height="50">
+				<div style="text-align: center;">
+					<p><?= strtoupper($staff->getUserdata()['firstname']) ?></p>
+					<p style="font-size: .84em;"><u><?= $staff->getUserdata()['designation'] ?></u></p>
+				</div>
+			</a>
 		</div>
 
 		<div class='nav' id="links">
-			<a href="#" class="nav-item">Link 1</a>
-			<a href="#" class="nav-item">Link 2</a>
-			<a href="#" class="nav-item">Link 3</a>
-			<a href="/logout.php" class="nav-item">Log Out</a>
-</div>
-	</aside>
-	<main>
-		<div id="topbar">
 			<?php
-			if (@$staff) {
-				echo $staff->getUsername();
+			$links = $staff->getLinks();
+			foreach ($links as $link => $value) {
+				# code...
+				echo "<a href='$value' class='nav-item'>$link</a>";
 			}
 			?>
+			<a href="/logout.php" class="nav-item">Log Out</a>
 		</div>
-		<?php
-		for ($i = 0; $i < 200; $i += 1) {
-			echo "$i<br>";
-		}
-		?>
+	</aside>
+	<main>
+		<?= flash() ?>

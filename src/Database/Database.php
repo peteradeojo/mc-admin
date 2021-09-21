@@ -68,6 +68,40 @@ class Database
 		}
 	}
 
+	function insert(array $table_values)
+	{
+		if (!$table_values) {
+			throw new Exception('No data to insert');
+		}
+		$sql = "";
+		foreach ($table_values as $table => $values) {
+			$usablevalues = [];
+			// print_r($values);
+			// echo "<br><br>";
+			$sql .= "INSERT INTO $table (" . join(',', array_keys($values)) . ") VALUES (";
+			for ($i = 0; $i < count(array_values($values)); $i += 1) {
+				$usablevalues[] = "'" . array_values($values)[$i] . "'";
+			}
+
+			// print_r($usablevalues);
+
+			$sql .= join(',', $usablevalues) . ');';
+		}
+
+		// echo $sql;
+		// exit();
+		if (count($table_values) > 1) {
+			$query = $this->cxn->multi_query($sql);
+		} else {
+			$query = $this->cxn->query($sql);
+		}
+		if (!$query) {
+			// echo $this->cxn->error;
+			throw new Exception($this->cxn->error);
+
+		}
+	}
+
 	function __destruct()
 	{
 		$this->cxn->close();

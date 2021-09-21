@@ -33,16 +33,19 @@ class Staff implements Serializable
 	{
 		try {
 			$value = $this->dbClient->select('login', where: "username='$this->username' AND password='$this->password' and active=1");
-			// print_r($value);
-			// exit();
 			if ($value) {
-				$_SESSION['login']['status'] = true;
-				$this->userdata = $value;
+				$staffdata = $this->dbClient->select('staff', where: "username='$this->username'");
+				if (!$staffdata) {
+					throw new Exception('Staff data could not be retrieved');
+				}
+				$userdata = array_merge($value, $staffdata);
+				$_SESSION['login'] = true;
+				$this->userdata = $userdata;
 				$this->loggedin = true;
 				return true;
 			} else {
 				$_SESSION['staff'] = null;
-				$_SESSION['login']['status'] = !true;
+				$_SESSION['login'] = !true;
 				$this->loggedin = !true;
 				return false;
 			}
@@ -73,9 +76,43 @@ class Staff implements Serializable
 		$data = unserialize($data);
 		$this->username = $data['username'];
 		$this->password = $data['password'];
-		$this->readwrite = $data['readwrite'];
-		$this->accesslevel = $data['accesslevel'];
+		$this->readwrite = $data['userdata']['readwrite'];
+		$this->accesslevel = $data['userdata']['accesslevel'];
 		$this->loggedin = $data['loggedin'];
 		$this->userdata = $data['userdata'];
+	}
+
+	function getUserdata()
+	{
+		return $this->userdata;
+	}
+
+	function getWorkspace()
+	{
+		return $this->userdata['department'];
+	}
+
+	function restrictWorkspace()
+	{
+		$allowed_space = str_replace('/', DIRECTORY_SEPARATOR, '/' . $this->getWorkspace());
+		$allowed_space = str_replace('/', DIRECTORY_SEPARATOR, $allowed_space);
+
+		$test_script_name = str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['SCRIPT_NAME']);
+		$test_script_name = str_replace('\\', DIRECTORY_SEPARATOR, $test_script_name);
+		if (!str_starts_with($test_script_name, $allowed_space)) {
+			header("Location: $allowed_space");
+		}
+	}
+
+	function getLinks()
+	{
+		switch ($this->getWorkspace()) {
+			case 'ict':
+				return [
+					'Patients' => '/ict/patients.php',
+					'Staff' => '/ict/staff.php',
+				];
+				break;
+		}
 	}
 }

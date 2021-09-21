@@ -2,8 +2,6 @@
 
 namespace Auth;
 
-use Database\Database;
-
 class Auth
 {
 	static function confirmLogin()
@@ -11,22 +9,32 @@ class Auth
 		$allowed_script = 'login.php';
 		if (str_ends_with($_SERVER['SCRIPT_NAME'], $allowed_script)) return true;
 
-		if (@$_SESSION['login']['status'] !== true) {
+		if (@$_SESSION['login'] !== true) {
 			return false;
 		}
 		return true;
 	}
 
-	static function redirectOnFalse(bool $value, string $location)
+	static function redirectOnFalse(bool $value, string $location = '/login.php')
 	{
+		$allowed_script = 'login.php';
+		if (str_ends_with($_SERVER['SCRIPT_NAME'], $allowed_script)) return true;
+
 		if (!$value) {
 			header("Location: $location");
 		}
 	}
 
-	static function logOut()
+	static function logout()
 	{
-		$_SESSION['login']['status'] = false;
+		$_SESSION['login'] = false;
 		header("Location: /");
+	}
+
+	static function authorize($userdata)
+	{
+		foreach ($userdata as $key => $value) {
+			echo "$key: $value<br/>";
+		}
 	}
 }

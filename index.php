@@ -1,13 +1,9 @@
 <?php
 
-use Auth\Auth;
-use Database\Database;
-
 require 'init.php';
 
 
 require 'header.php';
-?>
 
-<?php
+require "./sources/{$staff->getWorkspace()}/index.php";
 require 'footer.php';

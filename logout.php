@@ -7,3 +7,5 @@ require 'init.php';
 print_r($staff);
 $staff->logout();
 Auth::logOut();
+
+session_destroy();
