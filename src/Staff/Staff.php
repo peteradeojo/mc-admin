@@ -113,6 +113,12 @@ class Staff implements Serializable
 					'Staff' => '/ict/staff.php',
 				];
 				break;
+			case 'rec':
+				return [
+					'Patients' => '/rec/patients.php',
+					'Admissions' => '/rec/admissions.php'
+				];
+				break;
 		}
 	}
 }
