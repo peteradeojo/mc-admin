@@ -36,9 +36,11 @@
 		<div class='nav' id="links">
 			<?php
 			$links = $staff->getLinks();
-			foreach ($links as $link => $value) {
-				# code...
-				echo "<a href='$value' class='nav-item'>$link</a>";
+			if ($links) {
+				foreach ($links as $link => $value) {
+					# code...
+					echo "<a href='$value' class='nav-item'>$link</a>";
+				}
 			}
 			?>
 			<a href="/logout.php" class="nav-item">Log Out</a>

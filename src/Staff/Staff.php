@@ -126,6 +126,12 @@ class Staff implements Serializable
 					'Report' => '/nur/report.php'
 				];
 				break;
+			case 'doc':
+				return [
+					// 'Waiting' => '/doc/waitlist.php',
+					'Reviews' => '/doc/reviews.php',
+					'Admissions' => '/doc/admissions.php'
+				];
 		}
 	}
 }
