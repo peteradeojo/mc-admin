@@ -12,6 +12,11 @@ require 'vendor/autoload.php';
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+if (@$_ENV['maintenance'] == 1) {
+	echo "Under maintenance. Try again later";
+	exit();
+}
+
 Auth::redirectOnFalse(Auth::confirmLogin());
 
 
