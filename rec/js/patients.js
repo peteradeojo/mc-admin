@@ -1,5 +1,20 @@
-function checkPatientIn(id) {
-	console.log(id);
+async function checkPatientIn(id) {
+	// console.log(id);
+	try {
+		const res = await fetch('/rec/addtowaitlist.php', {
+			method: 'POST',
+			body: JSON.stringify({ patientid: id }),
+		});
+		const data = await res.json();
+		if (data.ok) {
+			alert(`Patient ${id} has been checked in`);
+		} else {
+			alert(data.message);
+		}
+		console.log(data);
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 $(() => {

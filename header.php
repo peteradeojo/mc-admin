@@ -19,7 +19,10 @@
 </head>
 
 <body>
-	<aside>
+	<aside class="closed">
+		<div class="container" id="sideTopBar">
+			<button class="btn" onclick="closeSideNav()">&times;</button>
+		</div>
 		<div class="container">
 			<a href="/<?= $staff->getWorkspace() ?>" class="head-link">
 				<img src="/assets/maternal-and-child.png" alt="" srcset="" height="50">
@@ -42,4 +45,7 @@
 		</div>
 	</aside>
 	<main>
+		<div id="topbar">
+			<button class="btn" onclick="openSideNav()"><i class="fa fa-bars"></i></button>
+		</div>
 		<?= flash() ?>

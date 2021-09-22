@@ -72,6 +72,9 @@ aside .head-link:hover,
 aside .nav-item:hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
+aside #sideTopBar {
+  display: none;
+}
 aside #links {
   margin-top: 60px;
 }
@@ -87,8 +90,39 @@ main {
   height: 100vh;
   margin-left: 20vw;
   width: 80vw;
+  position: relative;
+}
+main #topbar {
+  display: none;
+  padding: 8px 4px;
+  background: #223217;
+  color: #fff;
+}
+main #topbar button {
+  border: 2px solid #fff;
 }
 
+@media (max-width: 467px) {
+  aside.closed {
+    display: none;
+  }
+
+  aside {
+    z-index: 999;
+    width: 60vw;
+  }
+  aside #sideTopBar {
+    display: block;
+  }
+
+  main {
+    margin-left: 0;
+    width: 100vw;
+  }
+  main #topbar {
+    display: block;
+  }
+}
 .py-0 {
   padding-top: 0px;
   padding-bottom: 0px;
