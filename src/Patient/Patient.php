@@ -12,6 +12,7 @@ class Patient extends Database
 	protected $name;
 	protected $gender;
 	protected $data;
+	protected $vitals;
 
 	function __construct(string $hospital_number)
 	{
@@ -73,11 +74,15 @@ class Patient extends Database
 	{
 		try {
 			$data = $this->select('vitals', where: "hospital_number='$this->hospital_number' ORDER BY date_submitted DESC LIMIT 1");
-			// print_r($data);
 			$this->vitals = $data;
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
 		}
+	}
+
+	function getVitals()
+	{
+		return @$this->vitals;
 	}
 
 	protected function getData()
