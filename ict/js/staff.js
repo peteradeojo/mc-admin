@@ -1,11 +1,47 @@
-function activateStaff(username) {
+async function activateStaff(username) {
 	// TODO: activate staff async
-	console.log(username);
+	try {
+		const res = await fetch('/ict/activate.php', {
+			method: 'POST',
+			body: JSON.stringify({ username }),
+			headers: {
+				'Content-type': 'application/json',
+				Accept: 'application/json',
+			},
+		});
+		// console.log(await res.json());
+		const data = await res.json();
+		if (data.ok) {
+			alert(`User ${username} has been activated`);
+		} else {
+			alert(data.message);
+		}
+	} catch (error) {
+		console.error(error);
+	}
 }
 
-function deactivateStaff(username) {
+async function deactivateStaff(username) {
 	// TODO: deactivate staff async
-	console.log(username);
+	try {
+		const res = await fetch('/ict/deactivate.php', {
+			method: 'POST',
+			body: JSON.stringify({ username }),
+			headers: {
+				'Content-type': 'application/json',
+				Accept: 'application/json',
+			},
+		});
+		// console.log(await res.json());
+		const data = await res.json();
+		if (data.ok) {
+			alert(`User ${username} has been deactivated`);
+		} else {
+			alert(data.message);
+		}
+	} catch (error) {
+		console.error(error);
+	}
 }
 $(() => {
 	function format(d) {

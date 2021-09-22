@@ -23,6 +23,7 @@ class Database
 		return true;
 	}
 
+	// Checks table existence in database
 	protected function tableExists(string $table): bool | Exception
 	{
 		$sql = "SHOW TABLES LIKE '$table'";
@@ -39,6 +40,7 @@ class Database
 		}
 	}
 
+	// Retrieve info from Database table
 	function select(string $table, string $rows = '*', string $where = null): array | Exception
 	{
 		try {
@@ -68,6 +70,7 @@ class Database
 		}
 	}
 
+	// Insert data into tables
 	function insert(array $table_values)
 	{
 		if (!$table_values) {
@@ -98,8 +101,36 @@ class Database
 		if (!$query) {
 			// echo $this->cxn->error;
 			throw new Exception($this->cxn->error);
-
 		}
+		return true;
+	}
+
+	function update(array $tables_values, string $where)
+	{
+		$sql = "";
+		foreach ($tables_values as $table => $values) {
+			# code...
+			$sql .= "UPDATE $table SET ";
+			for ($i = 0; $i < count(array_keys($values)); $i += 1) {
+				$sql .= array_keys($values)[$i] . "='" . array_values($values)[$i] . "'";
+				if ($i < count(array_keys($values)) - 1) {
+					$sql .= ",";
+				}
+			}
+			$sql .= " WHERE $where;";
+		}
+
+		// echo $sql;
+		// exit();
+		if (count($tables_values) > 1) {
+			$query = $this->cxn->multi_query($sql);
+		} else {
+			$query = $this->cxn->query($sql);
+		}
+		if (!$query) {
+			throw new Exception($this->cxn->error);
+		}
+		return true;
 	}
 
 	function __destruct()
