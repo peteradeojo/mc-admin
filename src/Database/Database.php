@@ -29,7 +29,6 @@ class Database
 		$sql = "SHOW TABLES LIKE '$table'";
 		$query = $this->cxn->query($sql);
 		$result = $query->fetch_array();
-		// print_r($result);
 		if ($result) {
 			return true;
 		} else {
@@ -55,7 +54,6 @@ class Database
 
 				$query = $this->cxn->query($sql);
 				$result = $query->fetch_all(MYSQLI_ASSOC);
-				// echo count($result);
 				if (count($result) > 1) {
 					return $result;
 				} elseif (count($result) === 1) {
@@ -79,14 +77,11 @@ class Database
 		$sql = "";
 		foreach ($table_values as $table => $values) {
 			$usablevalues = [];
-			// print_r($values);
-			// echo "<br><br>";
 			$sql .= "INSERT INTO $table (" . join(',', array_keys($values)) . ") VALUES (";
 			for ($i = 0; $i < count(array_values($values)); $i += 1) {
 				$usablevalues[] = "'" . array_values($values)[$i] . "'";
 			}
 
-			// print_r($usablevalues);
 
 			$sql .= join(',', $usablevalues) . ');';
 		}
@@ -99,25 +94,36 @@ class Database
 			$query = $this->cxn->query($sql);
 		}
 		if (!$query) {
-			// echo $this->cxn->error;
 			throw new Exception($this->cxn->error);
 		}
+		while ($this->cxn->next_result());
 		return true;
 	}
 
-	function update(array $tables_values, string $where)
+	function update(array $tables_values, string $where, bool $replaceInto = false)
 	{
 		$sql = "";
 		foreach ($tables_values as $table => $values) {
 			# code...
-			$sql .= "UPDATE $table SET ";
-			for ($i = 0; $i < count(array_keys($values)); $i += 1) {
-				$sql .= array_keys($values)[$i] . "='" . array_values($values)[$i] . "'";
-				if ($i < count(array_keys($values)) - 1) {
-					$sql .= ",";
+			if (!$replaceInto) {
+				$sql .= "UPDATE $table SET ";
+				for ($i = 0; $i < count(array_keys($values)); $i += 1) {
+					$sql .= array_keys($values)[$i] . "='" . array_values($values)[$i] . "'";
+					if ($i < count(array_keys($values)) - 1) {
+						$sql .= ",";
+					}
 				}
+				$sql .= " WHERE $where;";
+			} else {
+				$sql .= "REPLACE INTO $table (" . join(',', array_keys($values)) . ") VALUES (";
+				for ($i = 0; $i < count(array_keys($values)); $i += 1) {
+					$sql .= "'" . array_values($values)[$i] . "'";
+					if ($i < count(array_keys($values)) - 1) {
+						$sql .= ",";
+					}
+				}
+				$sql .= ");";
 			}
-			$sql .= " WHERE $where;";
 		}
 
 		// echo $sql;
@@ -127,10 +133,16 @@ class Database
 		} else {
 			$query = $this->cxn->query($sql);
 		}
-		if (!$query) {
+		if (!$query or $this->cxn->error) {
 			throw new Exception($this->cxn->error);
 		}
+		while ($this->cxn->next_result());
 		return true;
+	}
+
+	function disconnect()
+	{
+		$this->cxn->close();
 	}
 
 	function __destruct()

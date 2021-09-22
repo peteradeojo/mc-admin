@@ -32,14 +32,15 @@ require '../header.php';
 						<td>$waiter[hospital_number]</td>
 						<td>$patient[name]</td>";
 
-					if ($waiter['status'] == 0) {
-						echo "<td><a href='/nur/vitals.php?patient=$waiter[hospital_number]&action=take' class='btn'>Take Vitals</a></td>";
-					} elseif ($waiter['status'] == 1) {
-						echo "<td>
-							<button class='btn'>Send to Doctor</button>
-							<a href='/nur/vitals.php?patient=$waiter[hospital_number]&action=view'>View Vitals</a>
-						</td>";
-						echo "<td></td>";
+					switch ($waiter['status']) {
+						case '0':
+							echo "<td><a href='/nur/vitals.php?patient=$waiter[hospital_number]&action=take' class='btn'>Take Vitals</a></td>";
+							break;
+						case '1':
+							echo "<td>
+								<a href='/nur/vitals.php?patient=$waiter[hospital_number]&action=view'>View Vitals</a>
+							</td>";
+							break;
 					}
 					echo "</tr>";
 				}

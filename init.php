@@ -19,7 +19,6 @@ if (@$_ENV['maintenance'] == 1) {
 
 Auth::redirectOnFalse(Auth::confirmLogin());
 
-
 try {
 	$db = new Database();
 	$db->connect();
