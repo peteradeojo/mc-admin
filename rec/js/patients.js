@@ -11,7 +11,6 @@ async function checkPatientIn(id) {
 		} else {
 			alert(data.message);
 		}
-		console.log(data);
 	} catch (error) {
 		console.error(error);
 	}
