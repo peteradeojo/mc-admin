@@ -12,14 +12,14 @@ require '../header.php';
 			<a class="action-card p-1" href="/ict/patients.php">
 				<i class="fas fa-stethoscope fa-2x"></i>
 				<span class="label">Patients</span>
-				<span class='count'><?= $db->select('biodata', rows: "count(id) as num")['num'] ?></span>
+				<span class='count'><?= $db->select('biodata', rows: "count(id) as num")[0]['num'] ?></span>
 			</a>
 		</div>
 		<div class="col-sm-4 col-md-3">
 			<a class="action-card p-1" href="/ict/staff.php">
 				<i class="fa fa-2x fa-user"></i>
 				<span class="label">Staff</span>
-				<span class='count'><?= $db->select('staff', rows: "count(id) as num")['num'] ?></span>
+				<span class='count'><?= $db->select('staff', rows: "count(id) as num")[0]['num'] ?></span>
 			</a>
 		</div>
 		<div class="col-sm-4 col-md-3">

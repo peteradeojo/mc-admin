@@ -21,13 +21,8 @@ require '../header.php';
 			<?php
 			try {
 				$waitlist = $db->select('waitlist');
-				if ($waitlist) {
-					if (@!$waitlist[0]) {
-						$waitlist = [$waitlist];
-					}
-				}
 				foreach ($waitlist as $item => $waiter) {
-					$patient = $db->select('biodata', where: "hospital_number='$waiter[hospital_number]'");
+					$patient = $db->select('biodata', where: "hospital_number='$waiter[hospital_number]'")[0];
 					echo "<tr>
 						<td>$waiter[hospital_number]</td>
 						<td>$patient[name]</td>";
@@ -41,6 +36,8 @@ require '../header.php';
 								<a href='/nur/vitals.php?patient=$waiter[hospital_number]&action=view'>View Vitals</a>
 							</td>";
 							break;
+						default:
+							echo "<td></td>";
 					}
 					echo "</tr>";
 				}

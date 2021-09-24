@@ -32,9 +32,9 @@ class Staff implements Serializable
 	function authenticate()
 	{
 		try {
-			$value = $this->dbClient->select('login', where: "username='$this->username' AND password='$this->password' and active=1");
+			$value = $this->dbClient->select('login', where: "username='$this->username' AND password='$this->password' and active=1")[0];
 			if ($value) {
-				$staffdata = $this->dbClient->select('staff', where: "username='$this->username'");
+				$staffdata = $this->dbClient->select('staff', where: "username='$this->username'")[0];
 				if (!$staffdata) {
 					throw new Exception('Staff data could not be retrieved');
 				}

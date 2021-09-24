@@ -14,6 +14,7 @@ require '../header.php';
 			<a href="/doc/reviews.php" class="action-card p-1">
 				<i class="fa fa-2x fa-book"></i>
 				<span class="label">Reviews</span>
+				<span class="count"><?= $db->select('visits', 'count(review) as num', where: "review=1 and (review_status != 1 or review_status IS NULL)")[0]['num'] ?></span>
 			</a>
 			<a href="/doc/admissions.php" class="action-card p-1 mt-1">
 				<i class="fa fa-2x fa-bed"></i>
@@ -27,16 +28,16 @@ require '../header.php';
 				try {
 					$waitlist = $db->select('waitlist', where: "status > 0");
 					if ($waitlist) {
-						if (@!$waitlist[0]) {
-							$waitlist = [$waitlist];
-						}
 						foreach ($waitlist as $item => $waiter) {
-							$patient = $db->select('biodata', where: "hospital_number='$waiter[hospital_number]'");
+							$patient = $db->select('biodata', where: "hospital_number='$waiter[hospital_number]'")[0];
 							echo "<li class='list-item d-flex justify-content-space-between p-1'>
 							<span>$patient[name]</span>";
 							switch ($waiter['status']) {
 								case '1':
 									echo "<a href='/doc/attend.php?patient=$waiter[hospital_number]&action=attend' class='btn'>Attend</a>";
+									break;
+								case '2':
+									echo "<a href='/doc/attend.php?patient=$waiter[hospital_number]&action=view' class='btn'>View</a>";
 									break;
 							}
 							echo "</li>";

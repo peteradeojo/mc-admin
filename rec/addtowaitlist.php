@@ -8,8 +8,7 @@ $data = json_decode($json);
 $patientid = @$data->patientid;
 if ($patientid) {
 	try {
-		// $confirm = $db->select('waitlist', where: "hospital_number=''")
-		$patient = $db->select('biodata', 'name, hospital_number', where: "id='$patientid'");
+		$patient = $db->select('biodata', 'name, hospital_number', where: "id='$patientid'")[0];
 		$confirm = $db->select('waitlist', where: "hospital_number='$patient[hospital_number]' AND status < 4");
 		if (!$confirm) {
 			$db->insert(['waitlist' => [

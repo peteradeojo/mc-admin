@@ -54,13 +54,14 @@ class Database
 
 				$query = $this->cxn->query($sql);
 				$result = $query->fetch_all(MYSQLI_ASSOC);
-				if (count($result) > 1) {
-					return $result;
-				} elseif (count($result) === 1) {
-					return $result[0];
-				} else {
-					return [];
-				}
+				// if (count($result) > 1) {
+				// 	return $result;
+				// } elseif (count($result) === 1) {
+				// 	return $result[0];
+				// } else {
+				// 	return [];
+				// }
+				return $result;
 			}
 		} catch (Exception $e) {
 			//throw $th;

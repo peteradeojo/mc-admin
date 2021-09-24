@@ -14,16 +14,19 @@ class Patient extends Database
 	protected $data;
 	protected $vitals;
 
-	function __construct(string $hospital_number)
+	function __construct(string $hospital_number = null)
 	{
 		try {
 			$this->connect();
-			$data = $this->select('biodata', where: "hospital_number='$hospital_number'");
 
-			$this->hospital_number = $data['hospital_number'];
-			$this->name = $data['name'];
-			$this->gender = $data['gender'];
-			$this->birthdate = $data['birthdate'];
+			if ($hospital_number) {
+				$data = $this->select('biodata', where: "hospital_number='$hospital_number'")[0];
+
+				$this->hospital_number = $data['hospital_number'];
+				$this->name = $data['name'];
+				$this->gender = $data['gender'];
+				$this->birthdate = $data['birthdate'];
+			}
 		} catch (Exception | Error $e) {
 			// echo $e->getMessage();
 			throw new Exception($e->getMessage());
@@ -73,7 +76,7 @@ class Patient extends Database
 	function loadVitals()
 	{
 		try {
-			$data = $this->select('vitals', where: "hospital_number='$this->hospital_number' ORDER BY date_submitted DESC LIMIT 1");
+			$data = $this->select('vitals', where: "hospital_number='$this->hospital_number' ORDER BY date_submitted DESC LIMIT 1")[0];
 			$this->vitals = $data;
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
