@@ -61,7 +61,7 @@ function addPrescription(elem) {
 				<div class='my-1'>
 				<input type='${inputtype}' name='${inputname}' list='${datalist}' required>
 				<input name='quantity-${inputname}' type='text' list='quantity-list' placeholder='Quantity' required>
-				<input name='mode-${inputname}' type='text' list='mode-list' placeholder='Mode' required>
+				<input name='mode-${inputname}' type='text' list='mode-list' placeholder='Frequency' required>
 				<input name='duration-${inputname}' type='text' list='duration-list' placeholder='Duration' required>
 				</div>
 				<button class='btn' onclick="deleteInput(this.parentElement)" type='button'>&times;</button>
@@ -74,7 +74,7 @@ function addPrescription(elem) {
  *
  * @param {HTMLInputElement} elem
  */
-function addFluid(elem) {
+function addAdmissionInstruction(elem) {
 	const target = document.querySelector(elem.getAttribute('data-target'));
 	const inputname = elem.getAttribute('data-inputname');
 	const inputtype = elem.getAttribute('data-inputtype') || 'text';
@@ -88,8 +88,8 @@ function addFluid(elem) {
 				<div class='my-1'>
 				<input type='${inputtype}' name='${inputname}' list='${datalist}'>
 				<input name='quantity-${inputname}' type='text' list='quantity-list' placeholder='Quantity' required>
-				<input name='mode-${inputname}' type='text' list='mode-list' placeholder='Mode' required>
-				<input name='duration-${inputname}' type='text' list='duration-list' placeholder='Duration' required>
+				<input name='mode-${inputname}' type='text' list='mode-list' placeholder='Frequency' required>
+				<input name='duration-${inputname}' type='text' list='duration-list' placeholder='Duration'>
 				</div>
 				<button class='btn' onclick="deleteInput(this.parentElement)" type='button'>&times;</button>
 			`;

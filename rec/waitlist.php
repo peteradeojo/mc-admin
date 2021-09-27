@@ -2,22 +2,28 @@
 
 require '../init.php';
 
-$title = 'Waitlist';
+$title = $staff->getUserdata()['firstname'] . ' | Waitlist';
+
 require '../header.php';
 ?>
 <div class="container">
 	<h1>Waitlist</h1>
 	<p>Patients in the waiting area</p>
 </div>
-<div class="container mt-2">
+<div class="container mt-2 row">
 	<!-- <h1>Hello</h1> -->
-	<ul class="list-group">
+	<ul class="list-group col-md-6">
 		<?php
 		try {
-			$waitlist = $db->select('waitlist');
-			foreach ($waitlist as $item => $waiter) {
-				$patient = $db->select('biodata', where: "hospital_number='$waiter[hospital_number]'")[0];
-				echo "<li class='list-item'><p>$patient[name]</p><p>Status: $waiter[status]</p></li>";
+			$waitlist = $db->select('waitlist', where: "status < 2");
+			// print_r($waitlist);
+			if (!$waitlist) {
+				echo "<li class='list-item'><p>No patients in the waiting area.</p></li>";
+			} else {
+				foreach ($waitlist as $item => $waiter) {
+					$patient = $db->select('biodata', where: "hospital_number='$waiter[hospital_number]'")[0];
+					echo "<li class='list-item border mb-1 p-1 rounded-lg'><p>$patient[name]</p><p>Status: $waiter[status]</p></li>";
+				}
 			}
 			// print_r($waitlist);
 		} catch (Exception $e) {

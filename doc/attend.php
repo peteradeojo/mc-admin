@@ -192,10 +192,7 @@ switch ($action) {
 					<div class="form-group col-md-6" id="admission-form">
 						<label>Fluids</label>
 						<div id="admission-fluids" class="py-1"></div>
-						<datalist id="admission-fluids-list">
-							<option value="Normal Saline"></option>
-						</datalist>
-						<button type="button" data-action="addFluid" data-target="#admission-fluids" data-inputtype="text" data-inputname="fluids[]" data-datalist="admission-fluids-list" class="btn" onclick="addFluid(this)">Add Fluid</button>
+						<button type="button" data-action="addFluid" data-target="#admission-fluids" data-inputtype="text" data-inputname="admission-instruction[]" data-datalist="prescriptions-list" class="btn" onclick="addAdmissionInstruction(this)">Add Fluid</button>
 					</div>
 				</div>
 				<div id="review-form" style="display:none" class="col-12">

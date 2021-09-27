@@ -19,6 +19,7 @@ require '../header.php';
 			<a href="/doc/admissions.php" class="action-card p-1 mt-1">
 				<i class="fa fa-2x fa-bed"></i>
 				<span class="label">Admissions</span>
+				<span class="count"><?= $db->select('admissions', "count(id) as num", where: "date_discharged is null")[0]['num'] ?></span>
 			</a>
 		</div>
 		<div class="col-md-8">
@@ -26,7 +27,7 @@ require '../header.php';
 			<ul class="list-group">
 				<?php
 				try {
-					$waitlist = $db->select('waitlist', where: "status > 0");
+					$waitlist = $db->select('waitlist', orderby: "status DESC", where: "status < 2 and status > 0");
 					if ($waitlist) {
 						foreach ($waitlist as $item => $waiter) {
 							$patient = $db->select('biodata', where: "hospital_number='$waiter[hospital_number]'")[0];

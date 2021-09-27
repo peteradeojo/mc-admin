@@ -23,6 +23,7 @@ class DoctorVisit extends Database
 	private $review;
 	private $review_date;
 	private $review_id;
+	private $review_status;
 	private $notes;
 	private $admitted;
 	private $admission_id;
@@ -59,13 +60,15 @@ class DoctorVisit extends Database
 				$this->review_date = $data['review_date'];
 				$this->review_id = sha1("lt-{$this->hosp_number}" . time() + 2000);
 				$this->review_status = 0;
-			} else
+			} else {
 				$this->review = '0';
+				$this->review_date = '';
+			}
 
 			// Admission information
 			if (@$data['admitted']) {
 				$this->admitted = $data['admitted'];
-				$this->admission_id = sha1("adm-{$this->hosp_number}" . time() - 2100);
+				$this->admission_id = sha1("$username-adm-" . time());
 			} else {
 				$this->admitted = '0';
 			}
@@ -111,9 +114,9 @@ class DoctorVisit extends Database
 					'lab_tests' => join(',', $this->lab_tests),
 					'lab_tests_id' => $this->lab_tests_id,
 					'investigations_id' => $this->investigations_id,
-					'admission_id' => $this->admission_id,
 					'prescriptions' => $this->prescription_data,
 					'admitted' => $this->admitted,
+					'admission_id' => $this->admission_id,
 					'review' => $this->review,
 					'review_id' => $this->review_id,
 					'review_date' => $this->review_date,
@@ -181,6 +184,11 @@ class DoctorVisit extends Database
 			$this->update(['waitlist' => [
 				'status' => 2
 			]], where: "hospital_number='$this->hosp_number'");
+
+			if ($this->admitted)
+				return $this->admission_id;
+			else
+				return null;
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
 		}

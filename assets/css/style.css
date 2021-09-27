@@ -26,6 +26,22 @@ body {
   overflow-y: scroll;
 }
 
+.border {
+  border: 2px solid #c4c4c4;
+}
+
+.border-lg {
+  border-width: 4px;
+}
+
+.rounded {
+  border-radius: 4px;
+}
+
+.rounded-lg {
+  border-radius: 8px;
+}
+
 .nav {
   list-style: none;
 }

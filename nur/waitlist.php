@@ -20,7 +20,7 @@ require '../header.php';
 		<tbody>
 			<?php
 			try {
-				$waitlist = $db->select('waitlist');
+				$waitlist = $db->select('waitlist', where: "status < 2", orderby: "status ASC");
 				foreach ($waitlist as $item => $waiter) {
 					$patient = $db->select('biodata', where: "hospital_number='$waiter[hospital_number]'")[0];
 					echo "<tr>
