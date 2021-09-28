@@ -12,11 +12,33 @@ class Staff implements Serializable
 	private $userdata;
 	private \Database\Database $dbClient;
 
-	function __construct($username, $password, $dbClient)
+	function __construct($username, $password = null, $dbClient)
 	{
 		$this->username = $username;
-		$this->password = sha1($password);
 		$this->dbClient = $dbClient;
+
+		if ($password) {
+			$this->password = sha1($password);
+		}
+	}
+
+	function load()
+	{
+		try {
+			$data = $this->dbClient->select('staff', where: "username='$this->username'")[0];
+			print_r($data);
+			$this->data = $data;
+		} catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+	}
+
+	function update($data)
+	{
+		$this->data['firstname'] = @$data['firstname'] ? $data['firstname'] : $this->data['firstname'];
+		$this->data['lastname'] = @$data['lastname'] ? $data['lastname'] : $this->data['lastname'];
+		$this->data['designation'] = @$data['designation'] ? $data['designation'] : $this->data['designation'];
+		$this->data['firstname'] = @$data['firstname'] ? $data['firstname'] : $this->data['firstname'];
 	}
 
 	function setDBCLient($dbClient)

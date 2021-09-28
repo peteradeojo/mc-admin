@@ -15,7 +15,7 @@ class Auth
 		return true;
 	}
 
-	static function redirectOnFalse(bool $value, string $location = '/login.php')
+	static function redirectOnFalse($value, string $location = '/login.php')
 	{
 		$allowed_script = 'login.php';
 		if (str_ends_with($_SERVER['SCRIPT_NAME'], $allowed_script)) return true;

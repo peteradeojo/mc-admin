@@ -21,7 +21,7 @@ require '../header.php';
 <div class="container">
 	<h1>New Staff</h1>
 
-	<div class="mt-4">
+	<div class="mt-4 col-md-4">
 		<form action="" method="post">
 			<div class="form-group">
 				<label for="firstname">Firstname</label>
