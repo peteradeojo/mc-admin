@@ -7,10 +7,16 @@ require '../init.php';
 
 if ($_POST) {
 	$username = $_POST['username'];
-	$staffupdate = new Staff($username, dbClient: $db);
-	$staffupdate->load();
-
-	print_r($_POST);
+	try {
+		$staffupdate = new Staff($username, dbClient: $db);
+		$staffupdate->load();
+		$staffupdate->update($_POST);
+		flash(['message' => 'Staff Info edited', 'type' => 'danger']);
+	} catch (Exception $e) {
+		flash(['message' => $e->getMessage(), 'type' => 'danger']);
+		echo $e->getMessage();
+	}
+	header("Location: /ict/staff.php");
 	exit();
 }
 

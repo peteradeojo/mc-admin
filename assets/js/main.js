@@ -1,12 +1,17 @@
 const sidenav = document.querySelector('aside');
 
 function openSideNav() {
-	// console.log(sidenav);
-	// sidenav.style.display = 'initial';
-	// sidenav.style.zIndex = 999;
 	sidenav.classList.remove('closed');
 }
 
 function closeSideNav() {
 	sidenav.classList.add('closed');
 }
+
+$(() => {
+	$('.alert-dismissible .close').each((index, item) => {
+		item.addEventListener('click', function () {
+			$(this.parentElement).remove();
+		});
+	});
+});

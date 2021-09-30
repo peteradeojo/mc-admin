@@ -6,9 +6,9 @@ function flash(array $info = null)
 		$_SESSION['flash'] = $info;
 	} else {
 		if (@$_SESSION['flash']) {
-			$str = "<div class='alert bg-{$_SESSION['flash']['type']}'>{$_SESSION['flash']['message']}</div>";
+			$str = "<div class='container alert bg-{$_SESSION['flash']['type']} alert-dismissible'>" . $_SESSION['flash']['message'] . "<button class='btn close'>&times;</button></div>";
 			unset($_SESSION['flash']);
-			return $str;
+			echo $str;
 		}
 	}
 }

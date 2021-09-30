@@ -161,11 +161,10 @@ class Database
 		} else {
 			$query = $this->cxn->query($sql);
 		}
-		while ($result = $this->cxn->next_result()) {
-			if (!$result) {
-				throw new Exception($this->cxn->error_list);
-			}
-		};
+		while ($this->cxn->next_result());
+		if ($this->cxn->error_list) {
+			throw new Exception($this->cxn->error_list);
+		}
 		return true;
 	}
 

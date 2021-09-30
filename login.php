@@ -10,7 +10,7 @@ if ($_POST) {
 		//code...
 		$db = new Database();
 		$db->connect();
-		$staff = new Staff($_POST['username'], $_POST['password'], $db);
+		$staff = new Staff($_POST['username'], password: $_POST['password'], dbClient: $db);
 		if ($staff->authenticate()) {
 			$_SESSION['staff'] = serialize($staff);
 			header("Location: /");

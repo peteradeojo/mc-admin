@@ -9,10 +9,10 @@ class Staff implements Serializable
 {
 	private $username;
 	private $password;
-	private $userdata;
 	private \Database\Database $dbClient;
+	private $userdata;
 
-	function __construct($username, $password = null, $dbClient)
+	function __construct($username, $dbClient, $password = null)
 	{
 		$this->username = $username;
 		$this->dbClient = $dbClient;
@@ -26,7 +26,6 @@ class Staff implements Serializable
 	{
 		try {
 			$data = $this->dbClient->select('staff', where: "username='$this->username'")[0];
-			print_r($data);
 			$this->data = $data;
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
@@ -38,7 +37,23 @@ class Staff implements Serializable
 		$this->data['firstname'] = @$data['firstname'] ? $data['firstname'] : $this->data['firstname'];
 		$this->data['lastname'] = @$data['lastname'] ? $data['lastname'] : $this->data['lastname'];
 		$this->data['designation'] = @$data['designation'] ? $data['designation'] : $this->data['designation'];
-		$this->data['firstname'] = @$data['firstname'] ? $data['firstname'] : $this->data['firstname'];
+		$this->data['department'] = @$data['department'] ? $data['department'] : $this->data['department'];
+		$this->data['phone_number'] = @$data['phone_number'] ? $data['phone_number'] : $this->data['phone_number'];
+
+		try {
+			$this->dbClient->update([
+				'staff' => [
+					'firstname' => $this->data['firstname'],
+					'lastname' => $this->data['lastname'],
+					'designation' => $this->data['designation'],
+					'department' => $this->data['department'],
+					'phone_number' => $this->data['phone_number']
+				]
+			], where: "id='{$this->data['id']}'");
+		} catch (Exception $e) {
+			print_r($e);
+			throw new Exception($e->getMessage());
+		}
 	}
 
 	function setDBCLient($dbClient)
@@ -54,7 +69,7 @@ class Staff implements Serializable
 	function authenticate()
 	{
 		try {
-			$value = $this->dbClient->select('login', where: "username='$this->username' AND password='$this->password' and active=1")[0];
+			$value = @$this->dbClient->select('login', where: "username='$this->username' AND password='$this->password' and active=1")[0];
 			if ($value) {
 				$staffdata = $this->dbClient->select('staff', where: "username='$this->username'")[0];
 				if (!$staffdata) {
@@ -126,6 +141,7 @@ class Staff implements Serializable
 		}
 	}
 
+	// Get nav links for each staff department
 	function getLinks()
 	{
 		switch ($this->getWorkspace()) {
@@ -153,6 +169,10 @@ class Staff implements Serializable
 					// 'Waiting' => '/doc/waitlist.php',
 					'Reviews' => '/doc/reviews.php',
 					'Admissions' => '/doc/admissions.php'
+				];
+			case 'phm':
+				return [
+					'Prescriptions' => '/phm/prescriptions.php',
 				];
 		}
 	}
