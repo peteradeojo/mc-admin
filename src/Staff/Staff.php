@@ -22,37 +22,58 @@ class Staff implements Serializable
 		}
 	}
 
-	function load()
+	function load($data = null)
 	{
 		try {
-			$data = $this->dbClient->select('staff', where: "username='$this->username'")[0];
+			switch ($data) {
+				case 'login':
+					$data = $this->dbClient->select('login', where: "username='$this->username'")[0];
+					break;
+				default:
+					$data = $this->dbClient->select('staff', where: "username='$this->username'")[0];
+			}
 			$this->data = $data;
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
 		}
 	}
 
-	function update($data)
+	function update($data, $info = null)
 	{
-		$this->data['firstname'] = @$data['firstname'] ? $data['firstname'] : $this->data['firstname'];
-		$this->data['lastname'] = @$data['lastname'] ? $data['lastname'] : $this->data['lastname'];
-		$this->data['designation'] = @$data['designation'] ? $data['designation'] : $this->data['designation'];
-		$this->data['department'] = @$data['department'] ? $data['department'] : $this->data['department'];
-		$this->data['phone_number'] = @$data['phone_number'] ? $data['phone_number'] : $this->data['phone_number'];
 
-		try {
-			$this->dbClient->update([
-				'staff' => [
-					'firstname' => $this->data['firstname'],
-					'lastname' => $this->data['lastname'],
-					'designation' => $this->data['designation'],
-					'department' => $this->data['department'],
-					'phone_number' => $this->data['phone_number']
-				]
-			], where: "id='{$this->data['id']}'");
-		} catch (Exception $e) {
-			print_r($e);
-			throw new Exception($e->getMessage());
+		switch ($info) {
+			case 'login':
+				try {
+					$this->dbClient->update([
+						'login' => [
+							'password' => $this->password
+						],
+					], where: "username = '$this->username'");
+				} catch (Exception $e) {
+					throw new Exception($e->getMessage());
+				}
+				break;
+			default:
+				$this->data['firstname'] = @$data['firstname'] ? $data['firstname'] : $this->data['firstname'];
+				$this->data['lastname'] = @$data['lastname'] ? $data['lastname'] : $this->data['lastname'];
+				$this->data['designation'] = @$data['designation'] ? $data['designation'] : $this->data['designation'];
+				$this->data['department'] = @$data['department'] ? $data['department'] : $this->data['department'];
+				$this->data['phone_number'] = @$data['phone_number'] ? $data['phone_number'] : $this->data['phone_number'];
+
+				try {
+					$this->dbClient->update([
+						'staff' => [
+							'firstname' => $this->data['firstname'],
+							'lastname' => $this->data['lastname'],
+							'designation' => $this->data['designation'],
+							'department' => $this->data['department'],
+							'phone_number' => $this->data['phone_number']
+						]
+					], where: "id='{$this->data['id']}'");
+				} catch (Exception $e) {
+					print_r($e);
+					throw new Exception($e->getMessage());
+				}
 		}
 	}
 
@@ -141,6 +162,16 @@ class Staff implements Serializable
 		}
 	}
 
+	function getAccessLevel()
+	{
+		return $this->getUserdata()['access_level'];
+	}
+
+	function canWrite()
+	{
+		return $this->getUserdata()['write_access'];
+	}
+
 	// Get nav links for each staff department
 	function getLinks()
 	{
@@ -149,6 +180,7 @@ class Staff implements Serializable
 				return [
 					'Patients' => '/ict/patients.php',
 					'Staff' => '/ict/staff.php',
+					'Departments' => '/ict/departments.php',
 				];
 				break;
 			case 'rec':

@@ -2,11 +2,15 @@
 
 require '../init.php';
 
+if (!$staff->canWrite() or $staff->getAccessLevel() < 5) {
+	echo json_encode(['error' => true, 'message' => "You're not authorized to perform this action. Contact IT."]);
+	exit();
+}
+
 $data = file_get_contents("php://input");
 $user = json_decode($data);
+// echo json_encode($user);
 if ($user) {
-	// echo $staff->getUsername();
-	// exit();
 	if ($user->username == $staff->getUsername()) {
 		echo json_encode(['message' => 'Cannot deactivate your own account']);
 		exit();
@@ -15,7 +19,7 @@ if ($user) {
 		//code...
 		$db->update([
 			'login' => [
-				'active' => 0,
+				'active' => '0',
 			]
 		], "username='$user->username'");
 		echo json_encode(['ok' => true]);

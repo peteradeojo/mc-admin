@@ -9,7 +9,6 @@ async function activateStaff(username) {
 				Accept: 'application/json',
 			},
 		});
-		// console.log(await res.json());
 		const data = await res.json();
 		if (data.ok) {
 			alert(`User ${username} has been activated`);
@@ -32,8 +31,8 @@ async function deactivateStaff(username) {
 				Accept: 'application/json',
 			},
 		});
-		// console.log(await res.json());
 		const data = await res.json();
+		console.log(data);
 		if (data.ok) {
 			alert(`User ${username} has been deactivated`);
 		} else {
@@ -56,13 +55,14 @@ $(() => {
 			<tr>
 				<td>
 				${
-					d.active === '0'
+					!d.active
 						? `<button class='btn' onclick="activateStaff('${d.username}')">Activate</a>`
 						: `<button class='btn btn-danger' onclick="deactivateStaff('${d.username}')">Deactivate</a>`
 				}
 				</td>
 				<td>
 					<a href="/ict/editstaff.php?user=${d.username}" class="btn btn-primary">Edit</a>
+					<a href="/ict/changepassword.php?user=${d.username}" class="btn btn-primary">Change Password</a>
 				</td>
 			</tr>
 			</table>`;

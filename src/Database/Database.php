@@ -72,7 +72,7 @@ class Database
 	{
 		$sql = "SELECT $table_rows FROM $tables[0]";
 		for ($i = 0; $i < count($tables) - 1; $i += 1) {
-			$sql .= " {$join_types[$i]['type']} JOIN {$tables[$i + 1]} ON {$join_types[$i]['on']} ";
+			$sql .= " {$join_types[$i]['type']} JOIN {$tables[$i + 1]} ON {$join_types[$i]['on']}";
 		}
 		if ($where) {
 			$sql .= " WHERE $where";
@@ -155,6 +155,7 @@ class Database
 		}
 
 		// echo $sql . "<br><br>";
+		// echo json_encode(['message' => $sql]);
 		// return;
 		if (count($tables_values) > 1) {
 			$query = $this->cxn->multi_query($sql);

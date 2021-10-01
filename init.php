@@ -33,3 +33,10 @@ try {
 } catch (Exception $e) {
 	echo $e->getMessage();
 }
+
+if (!str_ends_with($_SERVER['SCRIPT_NAME'], 'logout.php') and !str_ends_with($_SERVER['SCRIPT_NAME'], 'login.php')) {
+	if (!$staff->getUserdata()['read_access']) {
+		echo "You're not authorized to view this resource. Please contact the IT administrator. <a href='/logout.php'>Log Out</a>";
+		exit();
+	}
+}

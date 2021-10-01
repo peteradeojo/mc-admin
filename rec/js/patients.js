@@ -39,7 +39,7 @@ $(() => {
 				<tr>
 					<td>
 						<button class='btn btn-primary' onclick="checkPatientIn('${d.id}')">Check In</button>					
-						<a class='btn btn-danger' href='/rec/patientedit.php'>Edit Patient</a>
+						<a class='btn btn-danger' href='/rec/patientedit.php?id=${d.id}'>Edit Patient</a>
 					</td>
 				</tr>
 			</table>`;
