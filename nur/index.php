@@ -21,7 +21,7 @@ require '../header.php';
 			<a href="/nur/admissions.php" class="action-card p-1">
 				<i class="fa fa-bed fa-2x"></i>
 				<span class="label">Admissions</span>
-				<span class="count">0</span>
+				<span class="count"><?= $db->select('admissions', 'count(id) as num', "date_discharged IS NULL")[0]['num'] ?></span>
 			</a>
 		</div>
 		<div class="col-sm-8 col-md-6">
