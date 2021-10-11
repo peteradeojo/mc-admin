@@ -115,6 +115,14 @@ main #topbar button {
 
 .list-group {
   list-style: none;
+  border: 1px solid #223217;
+  border-radius: 4px;
+}
+.list-group .list-item {
+  padding: 1em;
+}
+.list-group .list-item:not(:last-child) {
+  border-bottom: 1px solid #223217;
 }
 
 aside {
@@ -809,6 +817,32 @@ textarea.form-control {
 
 .mb-5 {
   margin-bottom: 50px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.modal .close {
+  float: right;
+}
+.modal .modal-content {
+  background: #fff;
+  width: max(80%, 60%);
+  border-radius: 6px;
+  margin: 15% auto;
+}
+.modal .modal-header {
+  border-bottom: 1px solid #ccc;
+}
+.modal .modal-footer {
+  border-top: 1px solid #ccc;
 }
 
 /*# sourceMappingURL=style.css.map */

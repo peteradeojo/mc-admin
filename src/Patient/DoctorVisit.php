@@ -96,6 +96,7 @@ class DoctorVisit extends Database
 				'mode' => $this->prescription_modes[$i],
 				'quantity' => $this->prescription_quantity[$i],
 				'duration' => $this->prescription_duration[$i],
+				'status' => 0,
 			];
 		}
 		$this->prescription_data = json_encode($data);

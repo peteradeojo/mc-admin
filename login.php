@@ -18,7 +18,6 @@ if ($_POST) {
 			echo "No auth";
 		}
 	} catch (Exception $e) {
-		//throw $th;
 		echo $e->getMessage();
 	}
 	exit();
