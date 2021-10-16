@@ -23,7 +23,7 @@ require '../header.php';
 			</a>
 		</div>
 		<div class="col-sm-4 col-md-3">
-			<a class="action-card p-1" href="/ict/staff.php">
+			<a class="action-card p-1" href="/ict/departments.php">
 				<i class="fa fa-2x fa-table"></i>
 				<span class="label">Departments</span>
 				<span class='count'><?= $db->select('departments', rows: "count(id) as num")[0]['num'] ?></span>
