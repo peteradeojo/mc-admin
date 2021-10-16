@@ -14,7 +14,7 @@ require '../header.php';
 			<a href="/phm/prescriptions.php" class="action-card p-1">
 				<i class="fa fa-capsules fa-2x"></i>
 				<span class="label">Prescriptions</span>
-				<span class="count"><?= $db->select('visits', 'count(id) as num', where: "prescriptions NOT LIKE '[]'")[0]['num']; ?></span>
+				<span class="count"><?= $db->select('visits', 'count(id) as num', where: "prescriptions LIKE '%\"status\":0%'")[0]['num']; ?></span>
 			</a>
 		</div>
 		<div class="col-md-4">

@@ -206,6 +206,10 @@ class Staff implements Serializable
 				return [
 					'Prescriptions' => '/phm/prescriptions.php',
 				];
+			case 'lab':
+				return [
+					'Pending Tests' => '/lab/pending_tests.php',
+				];
 		}
 	}
 }

@@ -12,21 +12,28 @@
 	};
 	document.querySelectorAll('.show-prescription').forEach((link) => {
 		link.addEventListener('click', async () => {
-			// console.log(link.getAttribute('data-id'));
-			let { prescriptions: prescription } = await getPrescriptionData(link.getAttribute('data-id'));
+			let { prescriptions: prescription, id } = await getPrescriptionData(link.getAttribute('data-id'));
 
 			prescription = JSON.parse(prescription);
 
 			let block = document.createElement('form');
 			block.method = 'POST';
+			block.classList.add('async-form');
 			block.action = '/phm/api/savedispensation.php';
+			let id_input = document.createElement('input');
+			id_input.type = 'hidden';
+			id_input.value = id;
+			id_input.name = 'id';
+			block.appendChild(id_input);
 
-			Object.keys(prescription).forEach((item) => {
-				// console.log(prescription[item]);
+			Object.keys(prescription).forEach((item, index) => {
 				let formGroup = document.createElement('div');
 				formGroup.classList.add('form-group', 'mb-1');
-				let input = `<label>
-          <input type='checkbox' name='prescription[]'>
+				let input = `
+				<label>
+          <input type='checkbox' name='prescription[]' value='${index}' ${
+					prescription[item].status == 1 ? 'checked' : ''
+				}>
           <p>
             ${item}<br/>
             Mode: ${prescription[item].mode}<br/>

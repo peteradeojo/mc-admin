@@ -17,14 +17,10 @@ require '../header.php';
 				<?php
 				// $reviews = $db->select('visits', where: "review = 1 OR review_date IS NOT NULL;");
 				try {
-					$review_data = $db->join(tables: ['visits as vis', 'biodata as bd', 'admissions as ad'], join_types: [
+					$review_data = $db->join(tables: ['visits as vis', 'biodata as bd'], join_types: [
 						[
 							'type' => 'inner',
 							'on' => 'vis.hospital_number = bd.hospital_number'
-						],
-						[
-							'type' => 'left',
-							'on' => 'ad.hospital_number = bd.hospital_number'
 						]
 					], where: "vis.review = 1 or vis.review_date is not null");
 				} catch (Exception $e) {
@@ -40,20 +36,18 @@ require '../header.php';
 							$review['admitted'] = 'No';
 							break;
 					}
-					echo "<li class='list-group-item border p-1 rounded-lg'>
-						<div>
+					echo <<<_
+						<li class='list-item'>
 							<p><b>$review[name]</b></p>
 							<p>Date for review: $review[review_date]</p>
 							<p>Admitted: $review[admitted] </p>
 							<p>Complaints: $review[complaints]</p>
-						</div>
-					</li>";
+							<a href="/doc/review.php?id=$review[id]">Review</a>
+						</li>
+					_;
 				}
 				?>
 			</ul>
-			<div class="container">
-				<?= print_r($review_data, true) ?>
-			</div>
 		</div>
 	</div>
 </div>

@@ -17,14 +17,37 @@ function editDetail(inputId, displayId) {
 }
 
 $(() => {
+	/**
+	 * @param {HTMLElement} elem
+	 */
+	const submitAsyncForm = async (elem) => {
+		const url = elem.getAttribute('action');
+		const formData = new FormData(elem);
+		try {
+			const res = await fetch(url, { method: 'POST', body: formData });
+			const data = await res.json();
+			if (data.ok) {
+				window.location.reload();
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	$('.alert-dismissible .close').each((index, item) => {
 		item.addEventListener('click', function () {
 			$(this.parentElement).remove();
 		});
 	});
 
+	document.body.addEventListener('click', (e) => {
+		if (e.target.getAttribute('type') == 'submit' && e.target.closest('.async-form')) {
+			e.preventDefault();
+			submitAsyncForm(e.target.closest('.async-form'));
+		}
+	});
+
 	document.querySelectorAll('.modal-open').forEach((anchor) => {
-		// console.log(anchor);
 		anchor.addEventListener('click', () => {
 			const target = document.querySelector(anchor.getAttribute('data-target'));
 			target.style.display = 'initial';

@@ -2,7 +2,6 @@
 
 require '../init.php';
 
-// $prescriptions = $db->select('visits', rows: "prescriptions", where: "1");
 $prescriptions = $db->join(
 	[
 		'biodata as bd', 'visits as vis'
@@ -10,7 +9,7 @@ $prescriptions = $db->join(
 	[
 		['type' => 'right', 'on' => 'vis.hospital_number = bd.hospital_number'],
 	],
-	where: "vis.prescriptions LIKE '%\"status\": 0%'",
+	where: "vis.prescriptions LIKE '%\"status\":0%'",
 	table_rows: "name, vis.id"
 );
 
@@ -25,7 +24,7 @@ require '../header.php';
 		<?php
 		foreach ($prescriptions as $prescript => $data) {
 			// $json_data = json_decode($data['prescriptions']);
-			echo "<li class='list-item'><a href='#!' class='show-prescription modal-open' data-target='#prescription-modal' data-id='$data[id]'>$data[name]</a></li>";
+			echo "<li class='list-item show-prescription modal-open' data-target='#prescription-modal' data-id='$data[id]'>$data[name]</li>";
 		}
 		?>
 	</ul>
@@ -38,9 +37,9 @@ require '../header.php';
 			<h2>Prescription</h2>
 		</div>
 		<div class="modal-body py-1">
-			Help
+			<!-- Help -->
+			Loading Prescription
 		</div>
-		<!-- <div class="modal-footer"></div> -->
 	</div>
 </div>
 <?php

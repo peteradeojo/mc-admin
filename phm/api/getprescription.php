@@ -11,6 +11,6 @@ if (!$id) {
 
 $prescription = $db->join(['visits as vis', 'biodata as bio'], [
   ['type' => 'inner', 'on' => 'vis.hospital_number = bio.hospital_number'],
-], where: "vis.id = '$id' and prescriptions LIKE '%\"status\": 0%'", table_rows: "prescriptions, name");
+], where: "vis.id = '$id' and prescriptions LIKE '%\"status\":0%'", table_rows: "prescriptions, name, vis.id");
 
 echo json_encode($prescription[0]);
