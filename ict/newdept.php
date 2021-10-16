@@ -3,11 +3,11 @@
 require '../init.php';
 
 if (sha1($_POST['password']) !== $staff->getUserData()['password']) {
+  flash(info: ['message' => 'Invalid password', 'type' => 'danger']);
   header("Location: /logout.php");
+  exit();
 }
 
-// echo $staff->getAccessLevel();
-// exit();
 if ($staff->getAccessLevel() < '7') {
   flash(['type' => 'danger', 'message' => "You're not authorized to perform this action"]);
   header("Location: /ict/departments.php");

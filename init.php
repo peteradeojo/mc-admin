@@ -6,8 +6,8 @@ use Dotenv\Dotenv;
 use Database\Database;
 
 require 'src/autoload.php';
-require 'src/functions.php';
 require 'vendor/autoload.php';
+require 'src/functions.php';
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();

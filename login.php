@@ -38,6 +38,7 @@ $title = 'Admin | Login';
 </head>
 
 <body>
+	<?= flash() ?>
 	<main>
 		<div class="container">
 			<img src="/assets/maternal-and-child.png" alt="">
