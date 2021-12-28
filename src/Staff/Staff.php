@@ -169,7 +169,7 @@ class Staff implements Serializable
 
 	function canWrite()
 	{
-		return $this->getUserdata()['write_access'];
+		return $this->getUserdata()['write_access'] == 1;
 	}
 
 	// Get nav links for each staff department

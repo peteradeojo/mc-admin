@@ -1,6 +1,7 @@
 <?php
 
 use Auth\Auth;
+use Logger\Logger;
 use Staff\Staff;
 
 require '../init.php';
@@ -14,17 +15,20 @@ if ($_POST) {
 	if (!$staff->canWrite()) {
 		flash(['message' => 'You are not allowed to update this record. Contact IT', 'type' => 'danger']);
 	} else {
-		if ($staff->getAccessLevel() < 4) {
+		if ($staff->getAccessLevel() > 4) {
 			$username = $_POST['username'];
 			try {
 				//code...
 				$staffUpdate = new Staff($username, $db, $_POST['password']);
 				$staffUpdate->update(data: $_POST, info: 'login');
 				flash(['message' => 'Password Changed', 'type' => 'success']);
+				Logger::message("Changed " . $username . "password");
 			} catch (Exception $e) {
+				Logger::message($e->getMessage(), 'error');
 				flash(['message' => $e->getMessage(), 'type' => 'danger']);
 			}
 		} else {
+			Logger::message("Attempted to change staff password without adequate authorization");
 			flash(['message' => 'You do not have the required permission to update this record. Contact IT', 'type' => 'danger']);
 		}
 	}

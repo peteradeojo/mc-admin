@@ -135,7 +135,7 @@ class Database
 				for ($i = 0; $i < count(array_keys($values)); $i += 1) {
 					$sql .= array_keys($values)[$i] . "=";
 					// Account for null values to avoid errors
-					$sql .=  (array_values($values)[$i]) ? "'" . array_values($values)[$i] . "'" : 'null';
+					$sql .=  (array_values($values)[$i] !== null and array_values($values) !== 0) ? "'" . array_values($values)[$i] . "'" : 'null';
 					if ($i < count(array_keys($values)) - 1) {
 						$sql .= ",";
 					}

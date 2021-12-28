@@ -3,3 +3,5 @@ vendor
 *.scss
 .env
 *.sql
+log
+test.php

@@ -32,7 +32,7 @@ async function deactivateStaff(username) {
 			},
 		});
 		const data = await res.json();
-		console.log(data);
+		// console.log(data);
 		if (data.ok) {
 			alert(`User ${username} has been deactivated`);
 		} else {
@@ -55,7 +55,7 @@ $(() => {
 			<tr>
 				<td>
 				${
-					!d.active
+					d.active != 1
 						? `<button class='btn' onclick="activateStaff('${d.username}')">Activate</a>`
 						: `<button class='btn btn-danger' onclick="deactivateStaff('${d.username}')">Deactivate</a>`
 				}

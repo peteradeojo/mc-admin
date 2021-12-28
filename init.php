@@ -4,6 +4,7 @@ session_start();
 use Auth\Auth;
 use Dotenv\Dotenv;
 use Database\Database;
+use Logger\Logger;
 
 require 'src/autoload.php';
 require 'vendor/autoload.php';
@@ -27,7 +28,8 @@ try {
 		Auth::redirectOnFalse(false);
 	} else {
 		$staff->setDBCLient($db);
-		$staff->authenticate();
+		$staff->authenticate() or header("Location: /logout.php");
+		Logger::$staffName = $staff->getUsername();
 		$staff->restrictWorkspace();
 	}
 } catch (Exception $e) {

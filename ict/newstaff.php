@@ -1,5 +1,6 @@
 <?php
 
+use Logger\Logger;
 use Staff\NewStaff;
 
 require '../init.php';
@@ -7,6 +8,8 @@ require '../init.php';
 if ($_POST) {
 	try {
 		$newstaff = new NewStaff($_POST, $db);
+		print_r($newstaff);
+		Logger::message("Created new staff: ". $newstaff->getUsername());
 		$newstaff->save();
 	} catch (Exception $e) {
 		// $_SESSION

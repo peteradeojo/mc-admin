@@ -50,4 +50,8 @@ class NewStaff
 			throw new Exception($e->getMessage());
 		}
 	}
+
+	function getUsername() {
+		return $this->username;
+	}
 }

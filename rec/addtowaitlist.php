@@ -1,5 +1,7 @@
 <?php
 
+use Logger\Logger;
+
 require '../init.php';
 
 $json = file_get_contents("php://input");
@@ -16,6 +18,7 @@ if ($patientid) {
 				'checkedby' => $staff->getUsername()
 			]]);
 			echo json_encode(['ok' => true]);
+			Logger::message("check in: " . $patient['hospital_number']);
 		} else {
 			echo json_encode(['message' => "$patient[name] is already waiting. Please attend to them"]);
 			exit();

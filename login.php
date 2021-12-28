@@ -1,6 +1,7 @@
 <?php
 
 use Database\Database;
+use Logger\Logger;
 use Staff\Staff;
 
 require 'init.php';
@@ -13,9 +14,13 @@ if ($_POST) {
 		$staff = new Staff($_POST['username'], password: $_POST['password'], dbClient: $db);
 		if ($staff->authenticate()) {
 			$_SESSION['staff'] = serialize($staff);
+			Logger::$staffName = $staff->getUsername();
+			Logger::message("Logged in");
 			header("Location: /");
 		} else {
-			echo "No auth";
+			// echo "No auth";
+			Logger::message($_POST['username'] . " unable to login", 'error');
+			header("Location: /login.php");
 		}
 	} catch (Exception $e) {
 		echo $e->getMessage();
