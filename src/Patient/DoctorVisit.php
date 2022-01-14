@@ -106,7 +106,7 @@ class DoctorVisit extends Database
 	function save()
 	{
 		try {
-			$this->update([
+			$this->insert([
 				'visits' => [
 					'hospital_number' => $this->hosp_number,
 					'complaints' => join(',', $this->complaints),
@@ -125,7 +125,7 @@ class DoctorVisit extends Database
 					'notes' => $this->notes,
 					'attendedby' => $this->user,
 				],
-			], replaceInto: true, where: '1');
+			]);
 
 			foreach ($this->complaints as $data) {
 				# code...
@@ -186,9 +186,9 @@ class DoctorVisit extends Database
 				'status' => 2
 			]], where: "hospital_number='$this->hosp_number'");
 
-			if ($this->admitted)
+			if ($this->admitted) {
 				return $this->admission_id;
-			else
+			} else
 				return null;
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());

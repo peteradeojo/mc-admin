@@ -101,14 +101,14 @@ class Database
 			$usablevalues = [];
 			$sql .= "INSERT INTO $table (" . join(',', array_keys($values)) . ") VALUES (";
 			for ($i = 0; $i < count(array_values($values)); $i += 1) {
-				$usablevalues[] = (array_values($values)[$i]) ? "'" . array_values($values)[$i] . "'" : null;
+				$usablevalues[] = (array_values($values)[$i] !== 0 and array_values($values)[$i] !== null and array_values($values)[$i] !== '') ? "'" . array_values($values)[$i] . "'" : 'null';
 			}
 
 
 			$sql .= join(',', $usablevalues) . ');';
 		}
 
-		// echo $sql . "<br><br>";
+		// echo $sql;
 		// return;
 
 		if (count($table_values) > 1) {
@@ -118,7 +118,7 @@ class Database
 		}
 		while ($result = $this->cxn->next_result()) {
 			if (!$result) {
-				throw new Exception($this->cxn->error_list);
+				throw new Exception($this->cxn->error);
 			}
 		};
 		return true;
@@ -135,7 +135,7 @@ class Database
 				for ($i = 0; $i < count(array_keys($values)); $i += 1) {
 					$sql .= array_keys($values)[$i] . "=";
 					// Account for null values to avoid errors
-					$sql .=  (array_values($values)[$i] !== null and array_values($values) !== 0) ? "'" . array_values($values)[$i] . "'" : 'null';
+					$sql .=  (array_values($values)[$i] !== null and array_values($values)[$i] !== 0 and array_values($values)[$i] !== '') ? "'" . array_values($values)[$i] . "'" : 'null';
 					if ($i < count(array_keys($values)) - 1) {
 						$sql .= ",";
 					}
@@ -145,7 +145,7 @@ class Database
 				$sql .= "REPLACE INTO $table (" . join(',', array_keys($values)) . ") VALUES (";
 				for ($i = 0; $i < count(array_keys($values)); $i += 1) {
 					// Account for null values to avoid errors
-					$sql .= (array_values($values)[$i]) ? "'" . array_values($values)[$i] . "'" : 'null';
+					$sql .= (array_values($values)[$i] !== null and array_values($values)[$i] !== 0 and array_values($values)[$i] !== '') ? "'" . array_values($values)[$i] . "'" : 'null';
 					if ($i < count(array_keys($values)) - 1) {
 						$sql .= ",";
 					}
@@ -155,17 +155,18 @@ class Database
 		}
 
 		// echo $sql . "<br><br>";
-		// echo json_encode(['message' => $sql]);
 		// return;
+
 		if (count($tables_values) > 1) {
 			$query = $this->cxn->multi_query($sql);
 		} else {
 			$query = $this->cxn->query($sql);
 		}
-		while ($this->cxn->next_result());
-		if ($this->cxn->error_list) {
-			throw new Exception($this->cxn->error_list);
-		}
+		while ($result = $this->cxn->next_result()) {
+			if (!$result) {
+				throw new Exception($this->cxn->error);
+			}
+		};
 		return true;
 	}
 

@@ -165,7 +165,7 @@ switch ($action) {
 						?>
 					</datalist>
 					<datalist id="duration-list">
-					<?php
+						<?php
 						$options = $db->select('available_prescription_durations');
 						$options = @$options[0] ? $options : [$options];
 						foreach ($options as $option) {
@@ -187,12 +187,28 @@ switch ($action) {
 					</label>
 				</div>
 
-				<div id="admission-form" class="col-12" style="display: none">
+				<div id="admission-form" class="col-12 row" style="display: none">
 					<h3>Admission Plans</h3>
-					<div class="form-group col-md-6" id="admission-form">
+					<div class="form-group col-md-6" id="admission-fluids-container">
 						<label>Fluids</label>
 						<div id="admission-fluids" class="py-1"></div>
-						<button type="button" data-action="addFluid" data-target="#admission-fluids" data-inputtype="text" data-inputname="admission-instruction[]" data-datalist="prescriptions-list" class="btn" onclick="addAdmissionInstruction(this)">Add Fluid</button>
+						<button type="button" data-action="addFluid" data-target="#admission-fluids" data-inputtype="text" data-inputname="admission-instruction[]" data-datalist="fluids-list" class="btn" onclick="addAdmissionInstruction(this)">Add Fluid</button>
+						<datalist id="fluids-list">
+							<?php
+							$options = $db->select('available_prescriptions', where: "type_of_item='0'");
+							if (count($options)) {
+								$options = @$options[0] ? $options : [$options];
+								foreach ($options as $option) {
+									echo "<option value='$option[prescription]'>$option[prescription]</option>";
+								}
+							}
+							?>
+						</datalist>
+					</div>
+					<div class="form-group col-md-6" id="admission-drugs-container">
+						<label>Drugs</label>
+						<div id="admission-drugs" class="py-1"></div>
+						<button type="button" data-action="addDrug" data-target="#admission-drugs" data-inputtype="text" data-inputname="admission-drugs[]" data-datalist="prescriptions-list" class="btn" onclick="addAdmissionInstruction(this)">Add Drug</button>
 					</div>
 				</div>
 				<div id="review-form" style="display:none" class="col-12">

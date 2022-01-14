@@ -71,10 +71,31 @@ function addPrescription(elem) {
 }
 
 /**
- *
  * @param {HTMLInputElement} elem
  */
 function addAdmissionInstruction(elem) {
+	const target = document.querySelector(elem.getAttribute('data-target'));
+	const inputname = elem.getAttribute('data-inputname');
+	const inputtype = elem.getAttribute('data-inputtype') || 'text';
+	const datalist = elem.getAttribute('data-datalist');
+
+	const newSpace = document.createElement('div');
+	newSpace.classList.add('d-flex');
+	newSpace.style.marginTop = '4px';
+
+	newSpace.innerHTML = `
+				<div class='my-1'>
+				<input type='${inputtype}' name='${inputname}' list='${datalist}'>
+				<input name='quantity-${inputname}' type='text' list='quantity-list' placeholder='Quantity' required>
+				<input name='mode-${inputname}' type='text' list='mode-list' placeholder='Frequency' required>
+				<input name='duration-${inputname}' type='text' list='duration-list' placeholder='Duration'>
+				</div>
+				<button class='btn' onclick="deleteInput(this.parentElement)" type='button'>&times;</button>
+			`;
+
+	target.appendChild(newSpace);
+}
+function addAdmissionDrug(elem) {
 	const target = document.querySelector(elem.getAttribute('data-target'));
 	const inputname = elem.getAttribute('data-inputname');
 	const inputtype = elem.getAttribute('data-inputtype') || 'text';
