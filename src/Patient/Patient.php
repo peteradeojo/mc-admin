@@ -48,7 +48,6 @@ class Patient extends Database
 			'hospital_number' => $this->hospital_number,
 			'gender' => $this->gender,
 			'birthdate' => $this->birthdate,
-			'vitals' => @$this->vitals
 		];
 	}
 

@@ -195,7 +195,7 @@ switch ($action) {
 						<button type="button" data-action="addFluid" data-target="#admission-fluids" data-inputtype="text" data-inputname="admission-instruction[]" data-datalist="fluids-list" class="btn" onclick="addAdmissionInstruction(this)">Add Fluid</button>
 						<datalist id="fluids-list">
 							<?php
-							$options = $db->select('available_prescriptions', where: "type_of_item='0'");
+							$options = $db->select('available_prescriptions', where: "type='1'");
 							if (count($options)) {
 								$options = @$options[0] ? $options : [$options];
 								foreach ($options as $option) {
@@ -230,7 +230,6 @@ switch ($action) {
 				</div>
 			</form>
 		</div>
-
 		<!-- Vitals -->
 		<div class="col-md-3">
 			<h2>Vital Signs</h2>
@@ -253,7 +252,6 @@ switch ($action) {
 			</div>
 		</div>
 	</div>
-	<!-- <?= print_r($patient, 1) ?> -->
 </div>
 <?php
 $scripts = ['/doc/js/visit.js'];

@@ -8,6 +8,9 @@ require '../header.php';
 <div class="container">
 	<h1>Patients</h1>
 </div>
+<div class="container">
+	<a href="newpatient.php" class="btn btn-primary">New Patient</a>
+</div>
 <div class="container mt-4">
 	<table id="patients-table">
 		<thead>

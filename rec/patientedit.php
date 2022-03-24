@@ -2,9 +2,17 @@
 
 require '../init.php';
 
+$id = null;
 if (@!$_GET['id']) {
 	flash(['message' => 'No patient ID provided', 'type' => 'danger']);
 	header("Location: /rec");
+} else {
+	$id = $_GET['id'];
+}
+
+if ($_POST) {
+	print_r($_POST);
+	exit();
 }
 
 $patient = $db->join(['biodata as bd', 'insurance_data as id'], [

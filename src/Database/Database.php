@@ -40,11 +40,15 @@ class Database
 	}
 
 	// Retrieve info from Database table
-	function select(string $table, string $rows = '*', string $where = null, string $orderby = null, int $limit = null): array
+	function select(string $table, string $rows = '*', string $where = null, string $orderby = null, int $limit = null, bool $distinct = false): array
 	{
 		try {
 			if ($this->tableExists($table)) {
-				$sql = "SELECT $rows from $table";
+				$sql = "SELECT ";
+				if ($distinct) {
+					$sql .= "DISTINCT ";
+				}
+				$sql .= "$rows from $table";
 				if ($where) {
 					$sql .= " WHERE $where";
 				}
@@ -54,11 +58,14 @@ class Database
 				if ($limit) {
 					$sql .= " LIMIT $limit";
 				}
-
+				$sql .= ";";
 				// echo $sql;
 				// return [];
 
 				$query = $this->cxn->query($sql);
+				if (!$query) {
+					return [];
+				}
 				$result = $query->fetch_all(MYSQLI_ASSOC);
 				return $result;
 			}
