@@ -125,7 +125,7 @@ function alterVisitsTable()
 	});
 }
 
-alterVisitsTable();
+// alterVisitsTable();
 
 if (@$_ENV['maintenance'] == 1) {
 	echo "Under maintenance. Try again later";
