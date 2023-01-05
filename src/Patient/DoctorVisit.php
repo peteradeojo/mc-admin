@@ -48,6 +48,9 @@ class DoctorVisit extends Database
 			$this->complaints = @$data['complaints'] ? $data['complaints'] : [];
 			$this->investigations = @$data['investigations'] ? $data['investigations'] : [];
 			$this->assessments = @$data['assessments'] ? $data['assessments'] : [];
+			$this->assessments = array_filter($this->assessments, function ($value) {
+				return $value !== '';
+			});
 			$this->diagnosis = @$data['diagnosis'] ? $data['diagnosis'] : [];
 			$this->lab_tests = @$data['lab_tests'] ? $data['lab_tests'] : [];
 

@@ -16,7 +16,7 @@ class Laboratory extends Database
           ['type' => 'left', 'on' => 'vis.hospital_number = bio.hospital_number'],
           ['type' => 'left', 'on' => 'vis.lab_tests_id = lt.id']
         ],
-        where: "vis.lab_tests_id is NOT NULL AND lt.results is null",
+        where: "vis.lab_tests_id is NOT NULL AND (lt.results is null or lt.status = 0)",
         table_rows: "bio.name, vis.*"
       );
       return $data;

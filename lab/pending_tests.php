@@ -5,7 +5,7 @@ require '../init.php';
 require '../header.php';
 ?>
 <div class="container">
-  <h1>Tests</h1>
+  <h1>Pending Tests</h1>
   <ul class="list-group" id="tests-list">
   </ul>
 </div>

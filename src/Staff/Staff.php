@@ -215,6 +215,7 @@ class Staff implements Serializable
 			case 'lab':
 				return [
 					'Pending Tests' => '/lab/pending_tests.php',
+					'Tests Results' => '/lab/tests.php',
 				];
 		}
 	}

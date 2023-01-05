@@ -54,9 +54,8 @@ class Patient extends Database
 
 	function save()
 	{
-		// print_r($this->data);
 		try {
-			$this->insert($this->data);
+			$this->insert(['vitals' => $this->data['vitals']]);
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
 		}
@@ -64,10 +63,13 @@ class Patient extends Database
 
 	function saveVitals()
 	{
+		// echo '<pre>';
+		// var_dump($this->data);
+		// echo '</pre>';
+		// die();
 		try {
 			$this->save(['vitals' => $this->data['vitals']]);
-			$this->update(['waitlist' => $this->data['waitlist']], where: "hospital_number='$this->hospital_number'");
-			// print_r(['vitals' => $this->data['vitals']]);
+			$this->update(['waitlist' => $this->data['waitlist'] + ['update_time' => date('Y-m-d H:i:s')]], where: "hospital_number='$this->hospital_number'", replaceInto: false);
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
 		}

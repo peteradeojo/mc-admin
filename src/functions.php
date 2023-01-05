@@ -12,3 +12,19 @@ function flash(array $info = null)
 		}
 	}
 }
+
+function newFlash($type, $message)
+{
+	$_SESSION['flash'] = [
+		'type' => $type,
+		'message' => $message
+	];
+}
+
+function sanitizeInput($input)
+{
+	$input = trim($input);
+	$input = stripslashes($input);
+	$input = htmlspecialchars($input);
+	return $input;
+}

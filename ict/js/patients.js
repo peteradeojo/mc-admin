@@ -22,6 +22,7 @@ $(() => {
 			</tr>
 		</table>`;
 	}
+
 	const table = $('#patients-table').DataTable({
 		ajax: {
 			url: '/ict/getpatients.php',

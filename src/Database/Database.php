@@ -92,12 +92,11 @@ class Database
 			throw new Exception($this->cxn->error);
 		}
 		$result = $query->fetch_all(MYSQLI_ASSOC);
-		// throw new Exception($sql);
 		return $result;
 	}
 
 	// Insert data into tables
-	function insert(array $table_values)
+	function insert(array $table_values, $replaceInto = false)
 	{
 		if (!$table_values) {
 			throw new Exception('No data to insert');
@@ -111,7 +110,21 @@ class Database
 			}
 
 
-			$sql .= join(',', $usablevalues) . ');';
+			$sql .= join(',', $usablevalues) . ')';
+
+			if ($replaceInto) {
+				$sql .= " ON DUPLICATE KEY UPDATE ";
+				for ($i = 0; $i < count(array_keys($values)); $i += 1) {
+					$sql .= array_keys($values)[$i] . "=";
+					// Account for null values
+					$sql .= (array_values($values)[$i] !== 0 and array_values($values)[$i] !== null and array_values($values)[$i] !== '') ? "'" . array_values($values)[$i] . "'" : 'null';
+					if ($i < count(array_keys($values)) - 1) {
+						$sql .= ',';
+					}
+				}
+			}
+
+			$sql .= ';';
 		}
 
 		// echo $sql;
@@ -132,7 +145,7 @@ class Database
 
 	function update(array $tables_values, string $where, bool $replaceInto = false)
 	{
-		// $sql = "START TRANSACTION;";
+		// $sql = "BEGIN;";
 		$sql = '';
 		foreach ($tables_values as $table => $values) {
 			# code...

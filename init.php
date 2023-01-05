@@ -9,8 +9,8 @@ use Database\Migration;
 use Database\Query;
 use Logger\Logger;
 
-require 'src/autoload.php';
 require 'vendor/autoload.php';
+require 'src/autoload.php';
 require 'src/functions.php';
 
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -117,15 +117,22 @@ function runMigration()
 
 function alterVisitsTable()
 {
-	Migration::alterTable('visits', function (Builder $table) {
-		$table->modify('admission_id', 'varchar(50)');
-		$table->modify('lab_tests_id', 'varchar(50)');
-		$table->modify('investigations_id', 'varchar(50)');
-		$table->modify('review_id', 'varchar(50)');
+	// Migration::alterTable('visits', function (Builder $table) {
+	// 	$table->modify('admission_id', 'varchar(50)');
+	// 	$table->modify('lab_tests_id', 'varchar(50)');
+	// 	$table->modify('investigations_id', 'varchar(50)');
+	// 	$table->modify('review_id', 'varchar(50)');
+	// });
+
+	Migration::alterTable('lab_tests', function (Builder $table) {
+		$table->modify('id', 'varchar(50) not null primary key');
+		$table->modify('date', 'datetime not null');
+		$table->integer('status')->add('date');
+		$table->modify('status', 'int not null default 0'); //->add('date');
 	});
 }
 
-// alterVisitsTable();
+alterVisitsTable();
 
 if (@$_ENV['maintenance'] == 1) {
 	echo "Under maintenance. Try again later";

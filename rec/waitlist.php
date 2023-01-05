@@ -16,16 +16,26 @@ require '../header.php';
 		<?php
 		try {
 			$waitlist = $db->select('waitlist', where: "status < 2");
+			$waitlist = array_map(function ($wait) {
+				switch ($wait['status']) {
+					case '0':
+						$wait['status_text'] = 'Waiting for Vitals';
+						break;
+					case '1':
+						$wait['status_text'] = 'Awaiting doctor';
+						break;
+				}
+				return $wait;
+			}, $waitlist);
 			// print_r($waitlist);
 			if (!$waitlist) {
 				echo "<li class='list-item'><p>No patients in the waiting area.</p></li>";
 			} else {
 				foreach ($waitlist as $item => $waiter) {
 					$patient = $db->select('biodata', where: "hospital_number='$waiter[hospital_number]'")[0];
-					echo "<li class='list-item border mb-1 p-1 rounded-lg'><p>$patient[name]</p><p>Status: $waiter[status]</p></li>";
+					echo "<li class='list-item border mb-1 p-1 rounded-lg'><p>$patient[name]</p><p>Status: $waiter[status_text]</p></li>";
 				}
 			}
-			// print_r($waitlist);
 		} catch (Exception $e) {
 			echo $e->getMessage();
 		}

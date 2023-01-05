@@ -88,13 +88,20 @@ class Builder
 
   public function add($after = null)
   {
-    $this->query->editLastLine($this->query->lastLine() . ($after ? ' AFTER ' . $after : ''));
+    $this->query->editLastLine("ADD " . $this->query->lastLine() . ($after ? ' AFTER ' . $after : ''));
   }
 
   // Modify column type
   public function modify($column, $type)
   {
     $this->query->appendLine("MODIFY COLUMN $column $type");
+    return $this;
+  }
+
+  // make primary key
+  public function primary($column)
+  {
+    $this->query->appendLine("PRIMARY KEY ($column)");
     return $this;
   }
 }
