@@ -195,7 +195,7 @@ switch ($action) {
 						<button type="button" data-action="addFluid" data-target="#admission-fluids" data-inputtype="text" data-inputname="admission-instruction[]" data-datalist="fluids-list" class="btn" onclick="addAdmissionInstruction(this)">Add Fluid</button>
 						<datalist id="fluids-list">
 							<?php
-							$options = $db->select('available_prescriptions', where: "type_of_item='0'");
+							$options = $db->select('available_prescriptions', where: "type='0'");
 							if (count($options)) {
 								$options = @$options[0] ? $options : [$options];
 								foreach ($options as $option) {
@@ -249,6 +249,9 @@ switch ($action) {
 				</div>
 				<div class="py-1 col-6 col-md-12">
 					<b>Weight: </b><?= $patient->getVitals()['weight'] ?> kg
+				</div>
+				<div class="py-1 col-6 col-md-12">
+					<b>Taken By: </b><?= "{$patient->getVitals()['taken_by']['firstname']} {$patient->getVitals()['taken_by']['lastname']}" ?>
 				</div>
 			</div>
 		</div>

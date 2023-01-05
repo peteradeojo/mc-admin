@@ -78,6 +78,9 @@ class Patient extends Database
 		try {
 			$data = $this->select('vitals', where: "hospital_number='$this->hospital_number' ORDER BY date_submitted DESC LIMIT 1")[0];
 			$this->vitals = $data;
+
+			$taken_by = $this->select('staff', where: "username='{$this->vitals['taken_by']}'")[0];
+			$this->vitals['taken_by'] = $taken_by;
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
 		}

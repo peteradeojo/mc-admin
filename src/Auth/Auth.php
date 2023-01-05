@@ -20,9 +20,14 @@ class Auth
 		$allowed_script = 'login.php';
 		if (str_ends_with($_SERVER['SCRIPT_NAME'], $allowed_script)) return true;
 
+		// echo "Redirecting to $location";
+		// die();
+
 		if (!$value) {
 			header("Location: $location");
 		}
+
+		// die();
 	}
 
 	static function logout()

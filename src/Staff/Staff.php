@@ -11,6 +11,10 @@ class Staff implements Serializable
 	private $password;
 	private \Database\Database $dbClient;
 	private $userdata;
+	public $data;
+	public $loggedin;
+	public $accesslevel;
+	public $readwrite;
 
 	function __construct($username, $dbClient, $password = null)
 	{
@@ -91,6 +95,7 @@ class Staff implements Serializable
 	{
 		try {
 			$value = @$this->dbClient->select('login', where: "username='$this->username' AND password='$this->password' and active=1")[0];
+			// $value = @$this->dbClient->join(['staff as s', 'login as l'], [['type' => 'inner', 'on' => 'l.staff_id = s.id']], where: "s.username='$this->username' AND l.password='$this->password' and l.active=1")[0];
 			if ($value) {
 				$staffdata = $this->dbClient->select('staff', where: "username='$this->username'")[0];
 				if (!$staffdata) {
@@ -109,6 +114,7 @@ class Staff implements Serializable
 			}
 		} catch (Exception $e) {
 			echo $e->getMessage();
+			die();
 		}
 	}
 

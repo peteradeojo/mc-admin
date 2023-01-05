@@ -8,6 +8,12 @@ use mysqli;
 class Database
 {
 	protected \mysqli $cxn;
+
+	public function getClient()
+	{
+		return $this->cxn;
+	}
+
 	function __construct()
 	{
 	}
@@ -79,14 +85,14 @@ class Database
 		}
 		$sql .= ";";
 
-		// echo $sql;
-		// return;
+		// throw new Exception($sql);
 
 		$query = $this->cxn->query($sql);
 		if (!$query) {
 			throw new Exception($this->cxn->error);
 		}
 		$result = $query->fetch_all(MYSQLI_ASSOC);
+		// throw new Exception($sql);
 		return $result;
 	}
 

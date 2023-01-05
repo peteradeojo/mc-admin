@@ -18,7 +18,6 @@ if ($_POST) {
 			Logger::message("Logged in");
 			header("Location: /");
 		} else {
-			// echo "No auth";
 			Logger::message($_POST['username'] . " unable to login", 'error');
 			header("Location: /login.php");
 		}
