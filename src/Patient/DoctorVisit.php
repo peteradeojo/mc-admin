@@ -105,10 +105,6 @@ class DoctorVisit extends Database
 	// Enter a new visitation record into the database
 	function save()
 	{
-		echo '<pre>';
-		var_dump($this);
-		echo '</pre>';
-		die();
 		try {
 			$this->insert([
 				'visits' => [

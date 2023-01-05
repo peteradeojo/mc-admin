@@ -115,6 +115,18 @@ function runMigration()
 	});
 }
 
+function alterVisitsTable()
+{
+	Migration::alterTable('visits', function (Builder $table) {
+		$table->modify('admission_id', 'varchar(50)');
+		$table->modify('lab_tests_id', 'varchar(50)');
+		$table->modify('investigations_id', 'varchar(50)');
+		$table->modify('review_id', 'varchar(50)');
+	});
+}
+
+alterVisitsTable();
+
 if (@$_ENV['maintenance'] == 1) {
 	echo "Under maintenance. Try again later";
 	exit();

@@ -9,7 +9,7 @@ class Migration extends Client
   private static function execute($sql)
   {
     // echo $sql . "<br><br>";
-    // return;
+    // die();
     $client = self::getClient();
     $client->connect();
     try {
@@ -43,6 +43,15 @@ class Migration extends Client
   public static function dropTable($tableName)
   {
     $sql = "DROP TABLE IF EXISTS {$tableName};";
+    self::execute($sql);
+  }
+
+  public static function alterTable($table, $closure)
+  {
+    $builder = new Builder();
+    $closure($builder);
+
+    $sql = "ALTER TABLE {$table} " . $builder->sql() . ";";
     self::execute($sql);
   }
 }

@@ -85,4 +85,16 @@ class Builder
     $this->query->appendLine("{$name} DATE" . ($required ? ' NOT NULL' : ''));
     return $this;
   }
+
+  public function add($after = null)
+  {
+    $this->query->editLastLine($this->query->lastLine() . ($after ? ' AFTER ' . $after : ''));
+  }
+
+  // Modify column type
+  public function modify($column, $type)
+  {
+    $this->query->appendLine("MODIFY COLUMN $column $type");
+    return $this;
+  }
 }
