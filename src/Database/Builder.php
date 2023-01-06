@@ -39,9 +39,9 @@ class Builder
     return $this->query->sql();
   }
 
-  public function foreign($column, $table, $onUpdate = 'CASCADE', $onDelete = 'CASCADE')
+  public function foreign($column, $table, $reference = 'id', $onUpdate = 'CASCADE', $onDelete = 'CASCADE')
   {
-    $this->query->appendLine("FOREIGN KEY ($column) REFERENCES $table(id) ON UPDATE $onUpdate ON DELETE $onDelete");
+    $this->query->appendLine("FOREIGN KEY ($column) REFERENCES $table($reference) ON UPDATE $onUpdate ON DELETE $onDelete");
     return $this;
   }
 

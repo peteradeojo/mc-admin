@@ -192,6 +192,7 @@ class Staff implements Serializable
 			case 'rec':
 				return [
 					'Patients' => '/rec/patients.php',
+					'Register Patient' => '/rec/newpatient.php',
 					'Waitlist' => '/rec/waitlist.php'
 				];
 				break;

@@ -12,7 +12,7 @@ abstract class Client
     $this->client->connect();
   }
 
-  protected static function getClient()
+  public static function getClient()
   {
     return new Database();
   }

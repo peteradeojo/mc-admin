@@ -16,6 +16,32 @@ function editDetail(inputId, displayId) {
 	display.style.display = 'none';
 }
 
+function initTabArea(tabArea) {
+	const tabBtns = tabArea.querySelectorAll('.tab-list .tab');
+
+	tabBtns.forEach(tab => {
+		tab.addEventListener('click', (e) => {
+			const clickedTab = e.target;
+			tabBtns.forEach(tab => {
+				tab.classList.remove('active');
+				tabArea.querySelector(`${tab.getAttribute('data-target')}`).style.display = 'none';
+			});
+
+			clickedTab.classList.add('active');
+			tabArea.querySelector(`${clickedTab.getAttribute('data-target')}`).style.display = 'initial';
+		});
+	});
+}
+
+function initTabs() {
+	tabAreas = getTabbedContent();
+
+	tabAreas.forEach(initTabArea);
+}
+function getTabbedContent() {
+	const tabbedContent = document.querySelectorAll('.tabs');
+	return tabbedContent;
+}
 $(() => {
 	/**
 	 * @param {HTMLElement} elem
@@ -65,4 +91,6 @@ $(() => {
 			e.target.style.display = 'none';
 		}
 	});
+
+	initTabs();
 });

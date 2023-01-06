@@ -1,0 +1,24 @@
+ul.tab-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tab-list .tab {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background: #f1f1f1;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: -1px;
+}
+
+.tab-list .tab.active {
+  background: #fff;
+}
+
+.tabs .tab-content {
+  border: 1px solid #ccc;
+  padding: 20px;
+}

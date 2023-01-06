@@ -2,6 +2,7 @@
 
 namespace Patient;
 
+use Database\Client;
 use Error;
 use Exception;
 use Database\Database;
@@ -96,5 +97,17 @@ class Patient extends Database
 	protected function getData()
 	{
 		return $this->data;
+	}
+
+	public static function calculateHospitalNumber($category)
+	{
+		$number = strtolower($category) . '-';
+		// $pattern = "/\d{4}-(0|1)\d/-\d{2}/";
+		$lastDigits = date('my');
+		$client = Client::getClient();
+		$client->connect();
+		$data = (int) $client->select('biodata', 'count(id) as num', where: "hospital_number LIKE '$number%' and hospital_number like '%$lastDigits' ORDER BY hospital_number DESC LIMIT 1")[0]['num'];
+
+		return $number . str_pad($data + 1, 3, '0', STR_PAD_LEFT) . '-' . $lastDigits;
 	}
 }

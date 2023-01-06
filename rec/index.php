@@ -19,7 +19,7 @@ require '../header.php';
 			<a href="/rec/waitlist.php" class="action-card p-1">
 				<i class="fa fa-clipboard-check fa-2x"></i>
 				<span class="label">Waitlist</span>
-				<span class="count"><?= $db->select('waitlist', 'count(id) as num', where: 'status < 3')[0]['num'] ?></span>
+				<span class="count"><?= $db->select('waitlist', 'count(id) as num', where: 'status < 2')[0]['num'] ?></span>
 			</a>
 		</div>
 	</div>

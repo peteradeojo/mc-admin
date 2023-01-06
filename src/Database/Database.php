@@ -7,7 +7,7 @@ use mysqli;
 
 class Database
 {
-	protected \mysqli $cxn;
+	protected \mysqli|null $cxn;
 
 	public function getClient()
 	{
@@ -16,16 +16,20 @@ class Database
 
 	function __construct()
 	{
+		$this->cxn = null;
 	}
 
 	// Connection
 	function connect()
 	{
-		$cxn = new mysqli($_ENV['DBHOST'], $_ENV['DBUSER'], $_ENV['DBPASSWD'], $_ENV['DBNAME']);
-		if ($cxn->error) {
-			throw new Exception("Database connection failed. " . $cxn->error);
+		if ($this->cxn == null) {
+			$cxn = new mysqli($_ENV['DBHOST'], $_ENV['DBUSER'], $_ENV['DBPASSWD'], $_ENV['DBNAME']);
+			if ($cxn->error) {
+				throw new Exception("Database connection failed. " . $cxn->error);
+			}
+			$this->cxn = $cxn;
+			return true;
 		}
-		$this->cxn = $cxn;
 		return true;
 	}
 
@@ -196,6 +200,28 @@ class Database
 
 	function __destruct()
 	{
-		$this->cxn->close();
+		if ($this->cxn != null) {
+			$this->disconnect();
+		}
+	}
+
+	function beginTransaction()
+	{
+		$this->cxn->query('BEGIN;');
+	}
+
+	function commit()
+	{
+		$this->cxn->query('COMMIT;');
+	}
+
+	function rollback()
+	{
+		$this->cxn->query('ROLLBACK;');
+	}
+
+	function lastId()
+	{
+		return $this->cxn->insert_id;
 	}
 }

@@ -20,12 +20,14 @@ main {
   width: 80vw;
   position: relative;
 }
+
 main #topbar {
   display: none;
   padding: 8px 4px;
   background: #223217;
   color: #fff;
 }
+
 main #topbar button {
   border: 2px solid #fff;
 }
@@ -81,6 +83,7 @@ main #topbar button {
 .nav {
   list-style: none;
 }
+
 .nav .nav-item {
   display: block;
   padding: 14px 10px;
@@ -91,6 +94,7 @@ main #topbar button {
   flex-direction: column;
   width: 100%;
 }
+
 .card .card-header {
   padding: 0.8em 0.4em;
   background-color: #223217;
@@ -99,12 +103,14 @@ main #topbar button {
   border: 1px solid #223217;
   border-bottom: 0;
 }
+
 .card .card-body {
   padding: 1.8em 0.4em;
   border-right: 1px solid #223217;
   border-left: 1px solid #223217;
   border-bottom: 1px solid #223217;
 }
+
 .card .card-footer {
   padding: 0.8em 0.4em;
   border-radius: 0 0 8px 8px;
@@ -118,9 +124,11 @@ main #topbar button {
   border: 1px solid #223217;
   border-radius: 4px;
 }
+
 .list-group .list-item {
   padding: 1em;
 }
+
 .list-group .list-item:not(:last-child) {
   border-bottom: 1px solid #223217;
 }
@@ -131,6 +139,7 @@ aside {
   height: 100vh;
   background-color: #5d893f;
 }
+
 aside .head-link {
   display: flex;
   align-content: center;
@@ -141,20 +150,25 @@ aside .head-link {
   border-radius: 8px;
   padding: 0.4em 0;
 }
+
 aside .head-link:hover,
 aside .nav-item:hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
+
 aside #sideTopBar {
   display: none;
 }
+
 aside #links {
   margin-top: 60px;
 }
+
 aside #links a {
   text-decoration: none;
   color: #fff;
 }
+
 aside #links a:hover {
   text-decoration: underline;
 }
@@ -168,6 +182,7 @@ aside #links a:hover {
     z-index: 999;
     width: 60vw;
   }
+
   aside #sideTopBar {
     display: block;
   }
@@ -176,10 +191,12 @@ aside #links a:hover {
     margin-left: 0;
     width: 100vw;
   }
+
   main #topbar {
     display: block;
   }
 }
+
 .btn {
   padding: 8px 12px;
   border-radius: 4px;
@@ -202,18 +219,22 @@ aside #links a:hover {
   grid-template-rows: repeat(3, 1fr);
   transition: all 0.3s;
 }
+
 .action-card .label {
   font-size: 1.2em;
   grid-row: 3/3;
   grid-column: 1/1;
 }
+
 .action-card .count {
   text-align: center;
   font-size: 3.5em;
   grid-column: 2/2;
   grid-row: 1/4;
 }
-.action-card:hover, .action-card:focus {
+
+.action-card:hover,
+.action-card:focus {
   background-color: #223217;
   color: #fff;
 }
@@ -243,6 +264,7 @@ input:not([type=checkbox]):not([type=radio]):read-only {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
 input:not([type=checkbox]):not([type=radio]):read-only:focus {
   outline: none;
 }
@@ -250,9 +272,11 @@ input:not([type=checkbox]):not([type=radio]):read-only:focus {
 .form-group {
   width: 100%;
 }
+
 .form-group.editable-display .form-control {
   display: none;
 }
+
 .form-group.editable-display .content {
   border-bottom: 1px solid #223217;
   padding: 0.8em 0.4em;
@@ -262,7 +286,6 @@ input:not([type=checkbox]):not([type=radio]):read-only:focus {
 
 .form-control {
   width: 100%;
-  display: block;
   padding: 0.8em 0.4em;
   border: 1px solid #333;
   border-radius: 3px;
@@ -308,11 +331,13 @@ textarea.form-control {
     flex-wrap: wrap-reverse;
   }
 }
+
 @media (max-width: 767px) {
   .row-md-reverse {
     flex-wrap: wrap-reverse;
   }
 }
+
 .col-1 {
   width: 8.3333333333%;
 }
@@ -410,6 +435,7 @@ textarea.form-control {
     width: 100%;
   }
 }
+
 @media (min-width: 768px) {
   .col-md-1 {
     width: 8.3333333333%;
@@ -459,6 +485,7 @@ textarea.form-control {
     width: 100%;
   }
 }
+
 .py-0 {
   padding-top: 0px;
   padding-bottom: 0px;
@@ -822,6 +849,7 @@ textarea.form-control {
 .modal-open {
   cursor: pointer;
 }
+
 .modal-open:hover {
   text-decoration: underline;
   color: blue;
@@ -837,18 +865,22 @@ textarea.form-control {
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.3);
 }
+
 .modal .close {
   float: right;
 }
+
 .modal .modal-content {
   background: #fff;
   border-radius: 6px;
   width: 50%;
   margin: 5% auto;
 }
+
 .modal .modal-header {
   border-bottom: 1px solid #ccc;
 }
+
 .modal .modal-footer {
   border-top: 1px solid #474646;
 }

@@ -129,5 +129,5 @@ require '../header.php';
 	</form>
 </div>
 <?php
-// $scripts = ['/js/edit.js'];
+$scripts = ['/rec/js/editpatient.js'];
 require '../footer.php';

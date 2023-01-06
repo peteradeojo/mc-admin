@@ -27,7 +27,7 @@ require '../header.php';
 				}
 				return $wait;
 			}, $waitlist);
-			// print_r($waitlist);
+
 			if (!$waitlist) {
 				echo "<li class='list-item'><p>No patients in the waiting area.</p></li>";
 			} else {
