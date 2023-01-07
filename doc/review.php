@@ -46,6 +46,7 @@ $visit['lt']['results'] = Test::parseTests($visit['lab_tests'], $visit['lt']['re
 $visit['lt']['lab_scientist'] = $db->select('staff', where: "username='{$visit['lt']['submitted_by']}'", rows: "CONCAT(firstname, ' ',lastname) as name")[0]['name'] ?? 'Unknown';
 
 $patient = new Patient($visit['bio']['hospital_number']);
+$patient->loadVitals();
 
 
 $title = "Review for {$visit['bio']['name']}";
