@@ -22,7 +22,12 @@ require '../header.php';
 							'type' => 'inner',
 							'on' => 'vis.hospital_number = bd.hospital_number'
 						]
-					], where: "vis.review = 1 or vis.review_date is not null");
+					], where: "vis.review = 1 or vis.review_date is not null", table_rows: 'vis.id,bd.name,vis.review_date,vis.admitted, vis.complaints, bd.id as bio_id');
+
+					// echo '<pre>';
+					// var_dump($review_data);
+					// echo '</pre>';
+					// die();
 				} catch (Exception $e) {
 					echo $e->getMessage();
 				}
