@@ -37,8 +37,6 @@ if (!$visit) {
   Auth::redirectOnFalse($visit, '/doc/reviews.php');
 }
 
-$visit['complaints'] = "Hello,world";
-
 $visit['bio'] = json_decode($visit['bio'], true);
 $visit['lt'] = json_decode($visit['lt'], true);
 
