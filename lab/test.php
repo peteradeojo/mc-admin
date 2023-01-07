@@ -11,7 +11,7 @@ Auth::redirectOnFalse($_GET['id'], '/lab');
 $testid = $_GET['id'];
 
 $test = new Test($testid);
-$test->connect();
+// $test->connect();
 
 $test_data = $test->load_test();
 

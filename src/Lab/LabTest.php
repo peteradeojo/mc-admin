@@ -39,7 +39,12 @@ class LabTest extends Model
       ]
     ], where: $whereCondition);
 
-    $this->data = $data[0];
+    $this->data = $data[0] ?? [];
+    if (!$this->data) {
+      $this->data = [];
+      return;
+    }
+
     $this->data['test_results'] = Test::parseTests($this->data['lab_tests'], $this->data['results']);
 
     $labSci = $this->client->select('staff', where: "username='{$this->data['submitted_by']}'", rows: "concat(firstname, ' ',lastname) as name, username")[0];

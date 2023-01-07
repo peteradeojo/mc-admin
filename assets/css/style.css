@@ -913,3 +913,28 @@ textarea.form-control {
 .table.duo tbody tr:nth-child(odd) {
   background-color: #f2f2f2;
 }
+
+.only-print {
+  display: none;
+}
+
+@media only print {
+  .only-print {
+    display: initial;
+  }
+
+  .no-print,
+  .no-print * {
+    display: none !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  aside.no-print+main {
+    margin-left: 0;
+  }
+
+  body {
+    font-size: .8em;
+  }
+}

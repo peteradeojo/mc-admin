@@ -6,7 +6,7 @@ require '../header.php';
 ?>
 
 <div class="container">
-  <h1>Tests</h1>
+  <h1 class="mb-4">Tests</h1>
 
   <table id="tests-table">
     <thead>

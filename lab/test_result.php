@@ -7,11 +7,21 @@ require '../init.php';
 $testid = sanitizeInput($_GET['id'] ?? null);
 $test = new LabTest($testid);
 
-$title = "Test";
+if (!$test->data) {
+  newFlash('danger', 'Test not found');
+  redirect('/lab/tests.php');
+}
+
+$title = "Test Results for " . $test->data['name'];
 require '../header.php';
 ?>
+<h2 class="only-print">Maternal-Child Specialists' Clinics</h2>
 <div class="container">
-  <h2>Test Results: <u><?= $test->data['name'] ?></u></h2>
+  <h2 class="no-print">Test Results: <u><?= $test->data['name'] ?></u></h2>
+  <h3 class="only-print">Test Results:
+    <u class="no-print"><?= $test->data['name'] ?></u>
+    <span class="only-print" style="font-weight: 100;"><?= $test->data['id'] ?></span>
+  </h3>
 </div>
 
 <div class="container" id="test-results">
@@ -44,7 +54,7 @@ require '../header.php';
               Test Completed
             </td>
             <td>
-              <?= $test->data['completed'] ? 'Yes' : 'No' ?>
+              <b><?= $test->data['status'] > 0 ? 'Yes' : "<a href='/lab/test.php?id={$test->data['lab_tests_id']}'>No</a>" ?></b>
             </td>
           </tr>
           <tr>
@@ -70,9 +80,9 @@ require '../header.php';
   </div>
 </div>
 <div class="container mt-5">
-  <button class="btn btn-success" class="print-button" data-target="#test-results">Print</button>
+  <button class="btn btn-success no-print print-button" data-target="#test-results">Print</button>
 </div>
 <!-- <?= var_dump($test->data) ?> -->
 <?php
-
+$scripts = ['/lab/js/test_result.js'];
 require '../footer.php';

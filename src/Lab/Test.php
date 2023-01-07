@@ -12,6 +12,9 @@ class Test extends Database
 
   function __construct(string $id)
   {
+    parent::__construct();
+
+    $this->connect();
     $this->testid = $id;
   }
 

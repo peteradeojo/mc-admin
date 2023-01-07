@@ -31,6 +31,7 @@ class DoctorVisit extends Database
 
 	function __construct(string $username, $data = null)
 	{
+		parent::__construct();
 		if (!$username) {
 			throw new Exception('A user is required to submit a report');
 		}

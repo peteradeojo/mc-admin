@@ -15,6 +15,8 @@ class Admission extends Database
 
 	function __construct(array $data, string $username, $admission_id)
 	{
+		parent::__construct();
+
 		$this->hospital_number = $data['hospital_number'];
 		if (@$data['admission-instruction']) {
 

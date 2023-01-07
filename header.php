@@ -19,7 +19,7 @@
 </head>
 
 <body>
-	<aside class="closed">
+	<aside class="closed no-print">
 		<div class="container" id="sideTopBar">
 			<button class="btn" onclick="closeSideNav()">&times;</button>
 		</div>

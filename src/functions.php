@@ -28,3 +28,10 @@ function sanitizeInput($input)
 	$input = htmlspecialchars($input);
 	return $input;
 }
+
+
+function redirect($location)
+{
+	header("Location: $location");
+	exit;
+}
