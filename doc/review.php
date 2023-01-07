@@ -100,12 +100,6 @@ require '../header.php';
 
     </div>
   </div>
-
-  <div class="container">
-    <?= print_r($visit, 1) ?>
-  </div>
-  <div class="row">
-  </div>
 </div>
 <?php
 $scripts = ['/doc/js/visit.js'];
