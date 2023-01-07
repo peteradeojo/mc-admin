@@ -36,7 +36,7 @@ class Test extends Database
     }
   }
 
-  private static function parseTests($tests, $results = '')
+  static function parseTests($tests, $results = '')
   {
     $tests = explode(',', $tests);
     $tests = array_map(function ($test) {

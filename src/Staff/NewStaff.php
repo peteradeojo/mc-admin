@@ -44,6 +44,9 @@ class NewStaff
 				'login' => [
 					'username' => $this->username,
 					'password' => $this->password,
+					'read_access' => 1,
+					'write_access' => 1,
+					'access_level' => 2,
 				]
 			]);
 		} catch (Exception $e) {
@@ -51,7 +54,8 @@ class NewStaff
 		}
 	}
 
-	function getUsername() {
+	function getUsername()
+	{
 		return $this->username;
 	}
 }

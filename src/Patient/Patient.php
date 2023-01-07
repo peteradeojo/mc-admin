@@ -17,10 +17,11 @@ class Patient extends Database
 
 	function __construct(string $hospital_number = null)
 	{
-		try {
-			$this->connect();
+		parent::__construct();
 
+		try {
 			if ($hospital_number) {
+				$this->connect();
 				$data = $this->select('biodata', where: "hospital_number='$hospital_number'")[0];
 
 				$this->hospital_number = $data['hospital_number'];
@@ -29,7 +30,6 @@ class Patient extends Database
 				$this->birthdate = $data['birthdate'];
 			}
 		} catch (Exception | Error $e) {
-			// echo $e->getMessage();
 			throw new Exception($e->getMessage());
 		}
 	}
@@ -64,10 +64,6 @@ class Patient extends Database
 
 	function saveVitals()
 	{
-		// echo '<pre>';
-		// var_dump($this->data);
-		// echo '</pre>';
-		// die();
 		try {
 			$this->save(['vitals' => $this->data['vitals']]);
 			$this->update(['waitlist' => $this->data['waitlist'] + ['update_time' => date('Y-m-d H:i:s')]], where: "hospital_number='$this->hospital_number'", replaceInto: false);

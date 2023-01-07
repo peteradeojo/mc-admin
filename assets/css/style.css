@@ -893,3 +893,23 @@ textarea.form-control {
 }
 
 /*# sourceMappingURL=style.css.map */
+
+.table {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.table.centered td {
+  text-align: center;
+}
+
+.table.duo tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}

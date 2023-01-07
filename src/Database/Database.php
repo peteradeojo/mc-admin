@@ -19,17 +19,20 @@ class Database
 		$this->cxn = null;
 	}
 
-	// Connection
 	function connect()
 	{
-		if ($this->cxn == null) {
-			$cxn = new mysqli($_ENV['DBHOST'], $_ENV['DBUSER'], $_ENV['DBPASSWD'], $_ENV['DBNAME']);
-			if ($cxn->error) {
-				throw new Exception("Database connection failed. " . $cxn->error);
-			}
-			$this->cxn = $cxn;
+		if ($this->cxn != null) {
 			return true;
 		}
+
+		$cxn = new mysqli($_ENV['DBHOST'], $_ENV['DBUSER'], $_ENV['DBPASSWD'], $_ENV['DBNAME']);
+		if ($cxn->error) {
+			throw new Exception("Database connection failed. " . $cxn->error);
+		}
+		$this->cxn = $cxn;
+		return true;
+
+
 		return true;
 	}
 
