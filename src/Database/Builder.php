@@ -65,7 +65,8 @@ class Builder
       case 'boolean':
         $value = boolval($value) ? 1 : 0;
         break;
-
+      case 'datetime':
+        break;
       default:
         $value = "'$value'";
         break;
@@ -102,6 +103,20 @@ class Builder
   public function primary($column)
   {
     $this->query->appendLine("PRIMARY KEY ($column)");
+    return $this;
+  }
+
+  // Datetime
+  function datetime($column, $required = true)
+  {
+    $this->query->appendLine("{$column} DATETIME" . ($required ? ' NOT NULL' : ''));
+    return $this;
+  }
+
+  function json($column, $required = true)
+  {
+    $this->query->lastLineType = 'datetime';
+    $this->query->appendLine("{$column} JSON" . ($required ? ' NOT NULL' : ''));
     return $this;
   }
 }

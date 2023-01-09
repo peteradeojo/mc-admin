@@ -40,6 +40,7 @@ $(() => {
 					<td>
 						<button class='btn btn-primary' onclick="checkPatientIn('${d.hospital_number}')">Check In</button>					
 						<a class='btn btn-danger' href='/rec/patientedit.php?id=${d.hospital_number}'>Edit Patient</a>
+						${(d.anc_id && d.delivery_status == null) ? `<button class='btn btn-primary' onclick='startAntenatalVisit(${d.id})'>Start Antenatal Visit</button>` : ''}
 					</td>
 				</tr>
 			</table>`;
@@ -76,3 +77,23 @@ $(() => {
 		}
 	});
 });
+
+async function startAntenatalVisit(id) {
+	try {
+		const formData = new FormData();
+		formData.append('id', id);
+		const res = await fetch('/rec/api/startantenatalvisit.php', {
+			method: 'POST',
+			body: formData,
+		});
+		const data = await res.json();
+		if (data.ok) {
+			window.location.reload();
+		} else {
+			alert(data.message);
+		}
+	} catch (e) {
+		console.error(e);
+		return;
+	}
+}

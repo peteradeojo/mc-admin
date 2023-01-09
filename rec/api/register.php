@@ -111,6 +111,7 @@ $hospital_number = Patient::calculateHospitalNumber($data['category']);
   });
 });
 
+$data['name'] = ucfirst($data['name']);
 $data['phone_number'] ??= $data['phone'];
 $data['email_address'] ??= $data['email'];
 $data['gender'] = strtolower($data['gender']) == 'male' ? 1 : 0;

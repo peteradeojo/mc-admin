@@ -81,7 +81,7 @@ class Database
 		}
 	}
 
-	function join(array $tables, array $join_types, string $table_rows = '*', string $where = null)
+	function join(array $tables, array $join_types, string $table_rows = '*', string $where = null, string $orderby = null, $limit = 100)
 	{
 		$sql = "SELECT $table_rows FROM $tables[0]";
 		for ($i = 0; $i < count($tables) - 1; $i += 1) {
@@ -90,7 +90,12 @@ class Database
 		if ($where) {
 			$sql .= " WHERE $where";
 		}
-		$sql .= ";";
+
+		if ($orderby) {
+			$sql .= " ORDER BY $orderby";
+		}
+
+		$sql .= " LIMIT $limit;";
 
 		// throw new Exception($sql);
 
@@ -134,9 +139,6 @@ class Database
 			$sql .= ';';
 		}
 
-		// echo $sql;
-		// return;
-
 		if (count($table_values) > 1) {
 			$query = $this->cxn->multi_query($sql);
 		} else {
@@ -147,7 +149,7 @@ class Database
 				throw new Exception($this->cxn->error);
 			}
 		};
-		return true;
+		return $this->cxn->insert_id;
 	}
 
 	function update(array $tables_values, string $where, bool $replaceInto = false)
@@ -179,9 +181,6 @@ class Database
 				$sql .= ");";
 			}
 		}
-
-		// echo $sql . "<br><br>";
-		// return;
 
 		if (count($tables_values) > 1) {
 			$query = $this->cxn->multi_query($sql);

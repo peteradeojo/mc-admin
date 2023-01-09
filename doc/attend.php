@@ -33,7 +33,7 @@ switch ($action) {
 		<!-- Documentation form -->
 		<div class="col-md-9 ">
 			<h2>Documentation</h2>
-			<form action="/doc/process_visit.php" method="post" class="row ">
+			<form action="/doc/process_visit.php" method="post" class="row bold-labels">
 				<div class="form-group col-12">
 					<label for="hospital_number">Card Number</label>
 					<input type="text" name="hospital_number" readonly="readonly" class="form-control col-md-4" value="<?= $patient->getInfo()['hospital_number'] ?>">
@@ -43,7 +43,8 @@ switch ($action) {
 				<div class="form-group col-md-6">
 					<label for="complaint">Complaints</label>
 					<div id="complaints-container" class="py-1"></div>
-					<button type="button" class="btn" id="add-complaint" data-action="addInput" data-target="#complaints-container" data-inputname="complaints[]" data-inputtype="text" data-datalist="complaints-list">Add Complaint</button>
+					<textarea name="complaints_history" id="complaints-history" class="form-control" placeholder="Complaints history"></textarea>
+					<button type="button" class="btn" id="add-complaint" data-action="addInput" data-target="#complaints-container" data-inputname="complaints[]" data-inputtype="text" data-datalist="complaints-list" data-adjoint="complaints_duration[],text,Duration">Add Complaint</button>
 					<datalist id="complaints-list">
 						<!-- <option value="Fever"></option> -->
 						<?php
@@ -57,8 +58,27 @@ switch ($action) {
 					</datalist>
 				</div>
 
+				<div class="col-md-6"></div>
+
+				<!-- Diagnoses -->
+				<div class="form-group col-md-7">
+					<label for="diagnoses">Initial Diagnoses</label>
+					<div id="diagnoses" class="py-1"></div>
+					<button type="button" class="btn" data-action="addInput" data-datalist="diagnoses-list" data-target="#diagnoses" data-inputname="diagnosis[]">Add Initial Diagnosis</button>
+					<datalist id="diagnoses-list">
+						<?php
+						$options = $db->select('available_diagnoses');
+						$options = @$options[0] ? $options : [$options];
+						foreach ($options as $option) {
+							# code...
+							echo "<option value='$option[diagnosis]'>";
+						}
+						?>
+					</datalist>
+				</div>
+
 				<!-- Assessments -->
-				<div class="form-group col-md-6">
+				<!-- <div class="form-group col-md-6">
 					<label for="diagnosis" class="d-flex justify-content-space-between">
 						<span>Assessments</span>
 					</label>
@@ -74,7 +94,7 @@ switch ($action) {
 						}
 						?>
 					</datalist>
-				</div>
+				</div> -->
 
 				<!-- Investigations -->
 				<div class="form-group col-md-6">
@@ -108,23 +128,6 @@ switch ($action) {
 						foreach ($options as $option) {
 							# code...
 							echo "<option value='$option[test]'>";
-						}
-						?>
-					</datalist>
-				</div>
-
-				<!-- Diagnoses -->
-				<div class="form-group col-md-6">
-					<label for="diagnoses">Diagnoses</label>
-					<div id="diagnoses" class="py-1"></div>
-					<button type="button" class="btn" data-action="addInput" data-datalist="diagnoses-list" data-target="#diagnoses" data-inputname="diagnosis[]">Add Diagnosis</button>
-					<datalist id="diagnoses-list">
-						<?php
-						$options = $db->select('available_diagnoses');
-						$options = @$options[0] ? $options : [$options];
-						foreach ($options as $option) {
-							# code...
-							echo "<option value='$option[diagnosis]'>";
 						}
 						?>
 					</datalist>
@@ -183,7 +186,7 @@ switch ($action) {
 				</div>
 				<div class="form-group col-md-6">
 					<label for="review">
-						<input type="checkbox" name="review" id="review" class="conditional-input" data-area="#review-form"> Set for Review
+						<input type="checkbox" name="review" id="review" class="conditional-input" data-area="#review-form"> Set for Review of Tests & Investigations
 					</label>
 				</div>
 

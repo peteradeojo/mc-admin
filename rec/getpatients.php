@@ -2,10 +2,18 @@
 
 require '../init.php';
 
-$patients = $db->select('biodata') or [];
+// $patients = $db->select('biodata') or [];
+$patients = $db->join(['biodata as bio', 'antenatal_sessions as ancs'], [
+	[
+		'type' => 'left',
+		'on' => 'bio.id = ancs.patient_id'
+	],
+], table_rows: "bio.*, ancs.flmp, ancs.edd, ancs.delivery_status, ancs.id as anc_id");
 
-for ($i = 0; $i < count($patients); $i += 1) {
-	$patients[$i]['category'] = ucfirst($patients[$i]['category']);
-	$patients[$i]['gender'] = $patients[$i]['gender'] ? 'M' : 'F';
-}
+$patients = array_map(function ($patient) {
+	$patient['category'] = ucfirst($patient['category']);
+	$patient['gender'] = $patient['gender'] ? 'M' : 'F';;
+	return $patient;
+}, $patients);
+
 echo json_encode($patients);

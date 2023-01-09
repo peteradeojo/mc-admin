@@ -25,6 +25,13 @@ require '../header.php';
 			</a>
 		</div>
 		<div class="col-sm-8 col-md-6">
+			<a href="/nur/antenatals.php" class="action-card p-1">
+				<i class="fa fa-pen fa-2x"></i>
+				<span class="label">Antenatal Visits</span>
+				<span class="count"><?= $db->select('antenatal_visits', 'count(id) as num', "status < 5")[0]['num'] ?? 0 ?></span>
+			</a>
+		</div>
+		<div class="col-sm-8 col-md-6">
 			<a href="/nur/report.php" class="action-card p-1">
 				<i class="fa fa-pen fa-2x"></i>
 				<span class="label">Submit Report</span>

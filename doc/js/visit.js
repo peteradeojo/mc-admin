@@ -21,15 +21,25 @@ function addInput() {
 	const inputname = this.getAttribute('data-inputname');
 	const inputtype = this.getAttribute('data-inputtype') || 'text';
 	const datalist = this.getAttribute('data-datalist');
+	const placeholder = this.getAttribute('data-placeholder') || '';
+
+	const adjointSpace = this.getAttribute('data-adjoint') || null;
 
 	const newSpace = document.createElement('div');
-	newSpace.classList.add('d-flex', 'justify-content-space-between');
+	newSpace.classList.add('d-flex');
 	newSpace.style.marginTop = '4px';
 
 	newSpace.innerHTML = `
-				<input type='${inputtype}' name='${inputname}' list='${datalist}'>
-				<span clsss='p-1 font-larger' onclick="deleteInput(this.parentElement)" type='button'>&times;</span>
+				<span class='p-1' onclick="deleteInput(this.parentElement)" type='button'>&times;</span>
+				<input type='${inputtype}' name='${inputname}' list='${datalist}' placeholder='${placeholder}' class='mr-1'>
 			`;
+
+	if (adjointSpace) {
+		const [name, type, adjPlaceholder] = adjointSpace.split(',');
+		newSpace.innerHTML += `
+				<input type='${type}' name='${name}' placeholder='${adjPlaceholder}'>
+			`;
+	}
 
 	target.appendChild(newSpace);
 }
