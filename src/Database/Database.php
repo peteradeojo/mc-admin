@@ -95,7 +95,12 @@ class Database
 			$sql .= " ORDER BY $orderby";
 		}
 
-		$sql .= " LIMIT $limit;";
+		if ($limit) {
+			$sql .= " LIMIT $limit";
+		}
+
+		$sql .= ";";
+
 
 		// throw new Exception($sql);
 
