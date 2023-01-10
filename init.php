@@ -135,7 +135,7 @@ $dotenv->load();
 	Migration::alterTable('antenatal_visits', function (Builder $table) {
 		$table->integer('status', false)->default(0)->add('doc_id');
 	});
-})();
+});
 
 if (@$_ENV['maintenance'] == 1) {
 	echo "Under maintenance. Try again later";
