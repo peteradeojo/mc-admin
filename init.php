@@ -6,7 +6,6 @@ use Database\Builder;
 use Dotenv\Dotenv;
 use Database\Database;
 use Database\Migration;
-use Database\Query;
 use Logger\Logger;
 
 require 'vendor/autoload.php';
