@@ -27,6 +27,7 @@ class Visit
   public static function get($visit_id)
   {
     $db = Client::getClient();
+    $db->connect();
 
     $visits = $db->join([
       'visits as vis',

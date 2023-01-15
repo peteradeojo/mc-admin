@@ -25,7 +25,7 @@ class Database
 			return true;
 		}
 
-		$cxn = new mysqli($_ENV['DBHOST'], $_ENV['DBUSER'], $_ENV['DBPASSWD'], $_ENV['DBNAME']);
+		$cxn = new mysqli($_ENV['MYSQLHOST'], $_ENV['MYSQLUSER'], $_ENV['MYSQLPASSWORD'], $_ENV['MYSQLDATABASE'], $_ENV['MYSQLPORT']);
 		if ($cxn->error) {
 			throw new Exception("Database connection failed. " . $cxn->error);
 		}
