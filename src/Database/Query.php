@@ -26,4 +26,12 @@ class Query
   {
     return join(',', $this->lines);
   }
+
+  public function where($column, $operatorOrValue = null, $value = null)
+  {
+    if ($value == null) {
+      $value = $operatorOrValue;
+      $operatorOrValue = '=';
+    }
+  }
 }

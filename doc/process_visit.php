@@ -9,8 +9,15 @@ require '../init.php';
 $_POST['review'] = @$_POST['review'] == 'on';
 $_POST['admitted'] = @$_POST['admitted'] == 'on';
 
+// $data = array_map(fn ($value) => sanitizeInput($value), $_POST);
+
+echo '<pre>';
+var_dump($_POST);
+echo '</pre>';
+die();
+
 try {
-	$visit = new DoctorVisit(data: $_POST, username: $staff->getUsername());
+	$visit = new DoctorVisit(data: $data, username: $staff->getUsername());
 	$visit->connect();
 	$admission_id = $visit->save();
 	Logger::message("attended to patient $_POST[hospital_number]");

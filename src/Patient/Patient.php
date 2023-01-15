@@ -12,6 +12,8 @@ class Patient extends Database
 	protected $hospital_number;
 	protected $name;
 	protected $gender;
+	protected $age;
+	protected $birthdate;
 	protected $data;
 	protected $vitals;
 
@@ -23,10 +25,12 @@ class Patient extends Database
 			if ($hospital_number) {
 				$this->connect();
 				$data = $this->select('biodata', where: "hospital_number='$hospital_number'")[0];
+				$this->data = $data;
 
 				$this->hospital_number = $data['hospital_number'];
 				$this->name = $data['name'];
-				$this->gender = $data['gender'];
+				$this->gender = $data['gender'] == '0' ? 'F' : 'M';
+				$this->age = $data['age'];
 				$this->birthdate = $data['birthdate'];
 			}
 		} catch (Exception | Error $e) {
@@ -90,9 +94,9 @@ class Patient extends Database
 		return @$this->vitals;
 	}
 
-	protected function getData()
+	public function getData($key)
 	{
-		return $this->data;
+		return $this->data[$key];
 	}
 
 	public static function calculateHospitalNumber($category)

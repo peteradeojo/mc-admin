@@ -1,5 +1,13 @@
 Options +Indexes
-<Files .env>
+<Files ".env">
 	order allow,deny
 	deny from all
 </Files>
+
+<Directory "./src">
+	Options +Indexes
+	<!-- AllowOverride All
+	Require all granted -->
+	order allow deny
+	deny from all
+</Directory>

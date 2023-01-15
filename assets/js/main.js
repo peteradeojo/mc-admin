@@ -94,3 +94,17 @@ $(() => {
 
 	initTabs();
 });
+
+function toggleFloatingTab(tab) {
+	// if tab display is none, set to initial else set to none
+	const display = tab.style.display != 'initial' ? 'initial' : 'none';
+	tab.style.display = display;
+}
+
+document.querySelectorAll('.floating-tab').forEach((tab) => {
+	const { hook } = tab.dataset;
+	const btn = document.querySelector(hook) ?? null;
+
+	btn?.addEventListener('click', () => { toggleFloatingTab(tab) });
+	// tab.querySelector('.close')?.addEventListener('click', () => { toggleFloatingTab(tab) });
+});

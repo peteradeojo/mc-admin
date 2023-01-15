@@ -1,5 +1,6 @@
 <?php
 
+use Lab\Test;
 use Auth\Auth;
 use Patient\Patient;
 
@@ -14,6 +15,37 @@ $patient = new Patient($patientid);
 $patient->loadVitals();
 
 $title = ucfirst($action);
+$patientVisits = $db->join(
+	['visits as vis', 'biodata as bio', 'lab_tests as tests'],
+	[
+		[
+			'type' => 'left',
+			'on' => 'vis.hospital_number = bio.hospital_number'
+		],
+		[
+			'type' => 'left',
+			'on' => 'tests.id = vis.lab_tests_id'
+		]
+	],
+	table_rows: "bio.name, bio.hospital_number, vis.*, tests.*",
+	orderby: "vis.id desc",
+	where: "bio.hospital_number = '$patientid'"
+);
+
+$visits = array_map(function ($visit) {
+	if ($visit['lab_tests']) {
+		$visit['test_results'] = Test::parseTests($visit['lab_tests'], $visit['results']);
+	} else {
+		$visit['test_results'] = [];
+	}
+
+	$visit['prescriptions'] = json_decode($visit['prescriptions'], true);
+
+	return $visit;
+}, $patientVisits);
+
+
+$stylesheets = ['/assets/css/visits.css'];
 require '../header.php';
 
 switch ($action) {
@@ -25,9 +57,267 @@ switch ($action) {
 		exit();
 }
 ?>
-<div class="container">
-	<h1>Attending To: <?= $patient->getInfo()['name'] ?></h1>
+
+<div class="modal" id="previous-visits-modal">
+	<div class="modal-content p-2">
+		<span class="close btn" data-dismiss='#previous-visits-modal'>&times;</span>
+		<div class="modal-header pb-1">
+			<h2><?= $patient->getInfo()['name']  . ": " . (count($visits)) . " previous visits" ?></h2>
+		</div>
+		<div class="modal-body py-1" id="previous-visits">
+			<?php foreach ($visits as $visit) : ?>
+				<div class="container">
+					<table id="previous-visits-table">
+						<tbody>
+							<tr>
+								<td>Complaints</td>
+								<td><?= $visit['complaints'] ?? "No complaints registered." ?></td>
+							</tr>
+							<tr>
+								<td>Diagnoses</td>
+								<td><?= $visit['assessments'] ?? "Not present." ?></td>
+							</tr>
+							<tr>
+								<td>Lab Tests</td>
+								<td>
+									<ul>
+										<?php
+										if (count($visit['test_results'])) {
+											foreach ($visit['test_results'] as $test) {
+												echo <<<_
+													<li>{$test['name']} - $test[result]</li>
+												_;
+											}
+										} else {
+											echo "<li>No tests taken</li>";
+										}
+										?>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>Prescriptions</td>
+								<td>
+									<ul>
+										<?php
+										if (count($visit['prescriptions'])) {
+											foreach ($visit['prescriptions'] as $prescription => $data) {
+												echo <<<_
+														<li>$prescription - $data[quantity] $data[mode] ($data[duration])</li>
+													_;
+											}
+										} else {
+											echo "No prescriptions";
+										}
+										?>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
 </div>
+
+<div class=" container">
+	<div class="d-flex justify-content-space-between">
+		<h1>Attending To: <?= $patient->getInfo()['name'] ?></h1>
+		<button class="btn btn-primary modal-open" data-target="#previous-visits-modal">View Previous Visits</button>
+	</div>
+</div>
+<div class="container">
+	<button id="patient-biodata-btn" class="btn mb-1">Biodata</button>
+	<button id="allergies-btn" class="btn">Allergies and Drug Reactions</button>
+	<button id="pmh-btn" class="btn">Past Medical History</button>
+	<button id="psh-btn" class="btn">Past Surgical History</button>
+
+	<?php if ($patient->getInfo()['gender'] == 'F') : ?>
+		<button id="patient-gyne-btn" class="btn">Gynecological History</button>
+		<button id="delivery-history-btn" class="btn">Delivery History</button>
+	<?php endif; ?>
+
+	<button id="fsoc-btn" class="btn">Family History</button>
+</div>
+<div class="relative">
+
+	<!-- Biodata -->
+	<div class="floating-tab container" data-hook="#patient-biodata-btn" id="patient-biodata-tab">
+		<div class="d-flex justify-content-space-between">
+			<h2>Biodata</h2>
+			<span class="close btn btn-small" data-dismiss="#patient-biodata-tab">&times;</span>
+		</div>
+		<?php require './src/biodata.php' ?>
+	</div>
+
+	<!-- Allergies & Drug Reactions -->
+	<div class="floating-tab container" data-hook="#allergies-btn" id="allergies-tab">
+		<div class="d-flex justify-content-space-between">
+			<h2>Allergies & Drug Reactions</h2>
+			<span class="close btn btn-small" data-dismiss="#allergies-tab">&times;</span>
+		</div>
+		<?php require './src/allergies.php' ?>
+	</div>
+
+	<!-- Past Medical History -->
+	<div class="floating-tab container" id="past-medical-history" data-hook="#pmh-btn">
+		<div class="d-flex justify-content-space-between">
+			<h2>Past Medical History</h2>
+			<span class="close btn btn-small" data-dismiss="#past-medical-history">&times;</span>
+		</div>
+
+		<table class="table-for-info">
+			<thead>
+				<tr>
+					<th>Previous Admissions</th>
+					<th>Reason for Admission</th>
+					<th>Year</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Passt Surgical History -->
+	<div class="floating-tab container" id="psh-tab" data-hook="#psh-btn">
+		<div class="d-flex justify-content-space-between">
+			<h2>Past Surgical History</h2>
+			<span class="close btn btn-small" data-dismiss="#psh-tab">&times;</span>
+		</div>
+
+		<table class="table-for-info">
+			<thead>
+				<tr>
+					<th>Type of Surgery</th>
+					<th>Year of Surgery</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<?php if ($patient->getInfo()['gender'] == 'F') : ?>
+		<!-- Gynecological History -->
+		<div class="floating-tab container" data-hook="#patient-gyne-btn" id="patient-gyne-tab">
+			<div class="d-flex justify-content-space-between">
+				<h2>Gynecological History</h2>
+				<span class="close btn btn-small" data-dismiss="#patient-gyne-tab">&times;</span>
+			</div>
+
+			<table class="table-for-info">
+				<tr>
+					<td>Age of 1st Menses</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Length of Menstrual Cycle in days</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Duration of Menstruation</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Age at first coitus:</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Date of first coitus:</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Number of Sexual Partners</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Type of Contraception currently on</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Date of last PAP Smear</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- Pregnancy & Delivery History -->
+		<div class="floating-tab container" data-hook="#delivery-history-btn" id="delivery-history-tab">
+			<div class="d-flex justify-content-space-between">
+				<h2>Pregnancy & Delivery History</h2>
+				<span class="close btn btn-small" data-dismiss="#delivery-history-tab">&times;</span>
+			</div>
+
+			<table class="table-for-info">
+				<thead>
+					<tr>
+						<th>Duration</th>
+						<th>Type of Delivery</th>
+						<th>Sex of baby</th>
+						<th>Alive or Dead</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	<?php endif; ?>
+
+	<!-- Family & Social History -->
+	<div class="floating-tab container" id="fam-soc-history" data-hook="#fsoc-btn">
+
+		<div class="d-flex justify-content-space-between">
+			<h2>Family & Social History</h2>
+			<span class="close btn btn-small" data-dismiss="#fam-soc-history">&times;</span>
+		</div>
+
+		<table class="table-for-info">
+			<tbody>
+				<tr>
+					<td>Type of Marriage</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Occupation of the Patient</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Occupation of the Spouse</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Smoking Cigarettes</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Drinking Alcholic Beverages</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Other substance of abuse</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
 <div class="container">
 	<div class="row row-md-reverse">
 		<!-- Documentation form -->
@@ -259,7 +549,6 @@ switch ($action) {
 			</div>
 		</div>
 	</div>
-	<!-- <?= print_r($patient, 1) ?> -->
 </div>
 <?php
 $scripts = ['/doc/js/visit.js'];

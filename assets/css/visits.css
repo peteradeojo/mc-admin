@@ -1,0 +1,19 @@
+#previous-visits-table {
+  width: 100%;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background-color: rgba(100, 210, 56, 0.1);
+}
+
+#previous-visits-table tr:nth-child(odd) {
+  /* background-color: rgba(100, 210, 56, 0.1); */
+  background-color: #fff;
+}
+
+#previous-visits-table td {
+  padding: 2px;
+}
+
+#previous-visits-table ul {
+  list-style-type: none;
+}

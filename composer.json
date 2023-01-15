@@ -1,6 +1,23 @@
 {
+    "type": "project",
     "require": {
         "vlucas/phpdotenv": "^5.3",
         "nesbot/carbon": "^2.64"
+    },
+    "autoload": {
+        "psr-4": {
+            "Auth\\": "src/Auth/",
+            "Database\\": "src/Database/",
+            "Patient\\": "src/Patient/",
+            "Lab\\": "src/Lab/",
+            "Staff\\": "src/Staff/",
+            "Logger\\": "src/Logger/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "platform-check": false
     }
 }

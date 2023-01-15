@@ -115,6 +115,7 @@ class DoctorVisit extends Database
 					'hospital_number' => $this->hosp_number,
 					'complaints' => join(',', $this->complaints),
 					'assessments' => join(',', $this->assessments),
+					// 'diagnosis' => join(',', $this->assessments),
 					'investigations' => join(',', $this->investigations),
 					'lab_tests' => join(',', $this->lab_tests),
 					'lab_tests_id' => $this->lab_tests_id,

@@ -197,6 +197,7 @@ aside #links a:hover {
   }
 }
 
+
 .btn {
   padding: 8px 12px;
   border-radius: 4px;
@@ -204,6 +205,10 @@ aside #links a:hover {
   color: #fff;
   text-decoration: none;
   border: none;
+}
+
+.btn-small {
+  padding: 2px 8px;
 }
 
 .btn-primary {
@@ -941,4 +946,32 @@ textarea.form-control {
 
 form.bold-labels label {
   font-weight: bold;
+}
+
+.relative {
+  position: relative;
+}
+
+.floating-tab {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin: 10px;
+  border-radius: 4px;
+  min-width: 50%;
+  display: none;
+  box-shadow: 6px 6px 6px 2px rgba(0, 0, 0, 0.3);
+}
+
+.table-for-info {
+  width: 100%;
+}
+
+.table-for-info tr td {
+  padding: 2px 5px;
+}
+
+.table-for-info tr td:first-child {
+  font-weight: bold;
+  vertical-align: top;
 }

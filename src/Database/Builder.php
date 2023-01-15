@@ -109,13 +109,13 @@ class Builder
   // Datetime
   function datetime($column, $required = true)
   {
+    $this->query->lastLineType = 'datetime';
     $this->query->appendLine("{$column} DATETIME" . ($required ? ' NOT NULL' : ''));
     return $this;
   }
 
   function json($column, $required = true)
   {
-    $this->query->lastLineType = 'datetime';
     $this->query->appendLine("{$column} JSON" . ($required ? ' NOT NULL' : ''));
     return $this;
   }

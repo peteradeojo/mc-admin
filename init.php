@@ -8,145 +8,30 @@ use Database\Database;
 use Database\Migration;
 use Logger\Logger;
 
-require 'vendor/autoload.php';
-require 'src/autoload.php';
-require 'src/functions.php';
+require_once 'vendor/autoload.php';
+require_once 'src/functions.php';
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
-
-// (function () {
-// 	Migration::createTableIfNotExists('antenatal_sessions', function (Builder $table) {
-// 		$table->id();
-// 		$table->integer('patient_id');
-// 		$table->foreign('patient_id', 'biodata');
-
-// 		$table->date('flmp', false);
-// 		$table->date('edd', false);
-
-// 		$table->string('delivery_status', 30, false);
-// 		$table->timestamps();
-// 	});
-
-// 	Migration::createTableIfNotExists('anc_session_personal_history', function (Builder $table) {
-// 		$table->id();
-// 		$table->integer('anc_session_id');
-// 		$table->foreign('anc_session_id', 'antenatal_sessions');
-
-// 		$table->boolean('chest_disease', false)->default(false);
-// 		$table->boolean('kidney_disease', false)->default(false);
-// 		$table->boolean('blood_transfusion', false)->default(false);
-// 		$table->boolean('operation_no_cs', false)->default(false);
-// 		$table->string('others', 255, false)->default('');
-// 		$table->timestamps();
-// 	});
-
-// 	Migration::createTableIfNotExists('anc_session_family_history', function (Builder $table) {
-// 		$table->id();
-// 		$table->integer('anc_session_id');
-// 		$table->foreign('anc_session_id', 'antenatal_sessions');
-
-// 		$table->boolean('multiple_births', false)->default(false);
-// 		$table->string('multiple_births_relation', 30, false);
-// 		$table->boolean('hypertension', false)->default(false);
-// 		$table->string('hypertension_relation', 30, false);
-// 		$table->boolean('tuberculosis', false)->default(false);
-// 		$table->string('tuberculosis_relation', 30, false);
-// 		$table->boolean('heart_diseases', false)->default(false);
-// 		$table->string('heart_disease_relation', 30, false);
-// 		$table->string('others', 100, false);
-// 		$table->string('others_relations', 100, false);
-// 		$table->timestamps();
-// 	});
-
-// 	Migration::createTableIfNotExists('anc_session_objective_history', function (Builder $table) {
-// 		$table->id();
-// 		$table->integer('anc_session_id');
-// 		$table->foreign('anc_session_id', 'antenatal_sessions');
-
-// 		$table->integer('gravidity');
-// 		$table->integer('parity');
-// 		$table->timestamps();
-// 	});
-
-// 	Migration::createTableIfNotExists('anc_session_pregnancy_history', function (Builder $table) {
-// 		$table->id();
-// 		$table->integer('anc_session_id');
-// 		$table->foreign('anc_session_id', 'antenatal_sessions');
-
-// 		$table->date('date_of_delivery', false);
-// 		$table->string('delivery_type', 30, false);
-// 		$table->string('delivery_place', 30, false);
-// 		$table->string('duration_of_pregnancy', 20, false);
-// 		$table->integer('living_status', false)->default(1);
-// 		$table->string('plp', 20, false);
-// 		$table->boolean('gender', false)->default(true);
-
-// 		$table->timestamps();
-// 	});
-
-// 	Migration::createTableIfNotExists('anc_session_current_history', function (Builder $table) {
-// 		$table->id();
-// 		$table->integer('anc_session_id');
-// 		$table->foreign('anc_session_id', 'antenatal_sessions');
-
-// 		$table->decimal('weight', 5, 2, false);
-// 		$table->decimal('height', 5, 2, false);
-// 		$table->string('bp', 9, false);
-
-// 		$table->string('vaginal_bleeding', 20, false);
-// 		$table->string('vaginal_discharge', 20, false);
-// 		$table->string('urinary_symptoms', 20, false);
-// 		$table->string('leg_swelling', 20, false);
-// 		$table->string('other_symptoms', 60, false);
-
-// 		$table->timestamps();
-// 	});
-// });
-
-// (function () {
-// 	Migration::alterTable('antenatal_sessions', function (Builder $table) {
-// 		$table->modify('delivery_status', 'int not null default 0');
-// 	});
-// });
-
-(function () {
-	Migration::createTableIfNotExists('antenatal_visits', function (Builder $table) {
-		$table->id();
-
-		$table->integer('session_id');
-		$table->foreign('session_id', 'antenatal_sessions');
-
-		$table->integer('checked_in_by');
-		$table->foreign('checked_in_by', 'staff');
-
-		$table->integer('attending_nurse_id', false);
-		$table->foreign('attending_nurse_id', 'staff');
-
-		$table->json('vitals', false);
-
-		$table->integer('doc_id', false);
-		$table->foreign('doc_id', 'staff');
-
-		$table->datetime('date_submitted', false)->default('CURRENT_TIMESTAMP');
-		$table->timestamps();
-	});
-
-	Migration::alterTable('antenatal_visits', function (Builder $table) {
-		$table->integer('status', false)->default(0)->add('doc_id');
-	});
-});
 
 if (@$_ENV['maintenance'] == 1) {
 	echo "Under maintenance. Try again later";
 	exit();
 }
 
-Auth::redirectOnFalse(Auth::confirmLogin());
+(function () {
+	Migration::alterTable('visits', function (Builder $table) {
+		$table->datetime('created_at')->default('current_timestamp')->add();
+		$table->datetime('updated_at')->default('current_timestamp on update current_timestamp')->add();
+	});
+});
 
+Auth::redirectOnFalse(Auth::confirmLogin());
 try {
 	$db = new Database();
 	$db->connect();
+
+	// require 'migrations.php';
 	$staff = @unserialize($_SESSION['staff']);
 	if (!@$staff->loggedin) {
 		Auth::redirectOnFalse(false);
